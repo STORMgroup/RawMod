@@ -1,0 +1,19 @@
+{
+ "n_sites": 3737,
+ "n_mod": 1857,
+ "organisms": {
+  "E. coli": 900,
+  "H. pylori 26695": 600,
+  "A. thaliana": 537,
+  "Human (HG002)": 300,
+  "O. sativa": 300,
+  "Mouse brain": 300,
+  "Anabaena": 300,
+  "SPO1": 300,
+  "ONT oligonucleotides": 200
+ },
+ "auroc_all": 0.983049903184042,
+ "probe_organism_unmod": 0.5191489361702127,
+ "probe_organism_unmod_majority": 0.2393617021276596,
+ "probe_label_all": 0.9430026702174116
+}

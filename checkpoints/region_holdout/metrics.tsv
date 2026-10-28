@@ -1,0 +1,7 @@
+model	auroc	auprc	n_pos	n_test	test_set
+mixed	0.987	0.958	12927	55845	region_subsampled
+loco_5mC	0.977	0.733	78	3456	region_5mC_subsampled
+loco_5hmC	0.973	0.565	40	3418	region_5hmC_subsampled
+loco_6mA	0.640	0.319	6274	30240	region_6mA_subsampled
+loco_4mC	0.914	0.492	551	13343	region_4mC_subsampled
+loco_5hmU	0.470	0.663	3570	5298	region_5hmU_subsampled

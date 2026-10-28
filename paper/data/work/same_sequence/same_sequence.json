@@ -1,0 +1,417 @@
+{
+ "A: E. coli WT library, 6mA (GATC) + 5mC (CCWGG) vs knockout": {
+  "RawMod": {
+   "pooled": 0.987,
+   "tpr1": 0.786,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.978,
+    "ecoli_dcm_5mC_reg": 0.999
+   }
+  },
+  "Dorado 6mA": {
+   "pooled": 0.694,
+   "tpr1": 0.613,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 0.503
+   }
+  },
+  "Dorado 4mC+5mC": {
+   "pooled": 0.575,
+   "tpr1": 0.386,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.499,
+    "ecoli_dcm_5mC_reg": 1.0
+   }
+  },
+  "Dorado 5mC+5hmC": {
+   "pooled": 0.576,
+   "tpr1": 0.387,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.499,
+    "ecoli_dcm_5mC_reg": 1.0
+   }
+  },
+  "Dorado 5mCG+5hmCG": {
+   "pooled": 0.492,
+   "tpr1": 0.005,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.5,
+    "ecoli_dcm_5mC_reg": 0.479
+   }
+  },
+  "Dorado, all models (max)": {
+   "pooled": 0.999,
+   "tpr1": 0.98,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 1.0
+   }
+  },
+  "UniMeth 5mC": {
+   "pooled": 0.573,
+   "tpr1": 0.364,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.499,
+    "ecoli_dcm_5mC_reg": 0.99
+   }
+  },
+  "UniMeth 6mA": {
+   "pooled": 0.69,
+   "tpr1": 0.613,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 0.504
+   }
+  },
+  "UniMeth, both models (max)": {
+   "pooled": 0.997,
+   "tpr1": 0.943,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 0.99
+   }
+  },
+  "UniMeth-FT (3 fine-tuned, max)": {
+   "pooled": 0.565,
+   "tpr1": 0.216,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.495,
+    "ecoli_dcm_5mC_reg": 0.955
+   }
+  },
+  "UniMeth-Agn": {
+   "pooled": 0.976,
+   "tpr1": 0.533,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.953,
+    "ecoli_dcm_5mC_reg": 1.0
+   }
+  },
+  "Rockfish": {
+   "pooled": 0.492,
+   "tpr1": 0.005,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.5,
+    "ecoli_dcm_5mC_reg": 0.479
+   }
+  },
+  "DeepMod2": {
+   "pooled": 0.492,
+   "tpr1": 0.005,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.5,
+    "ecoli_dcm_5mC_reg": 0.479
+   }
+  },
+  "Dorado, best single model": {
+   "pooled": 0.694,
+   "tpr1": 0.613,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 0.503
+   },
+   "which": "Dorado 6mA"
+  },
+  "ci": {
+   "Dorado, all models (max)": [
+    -0.01283463393464716,
+    -0.01044508946306331
+   ],
+   "UniMeth, both models (max)": [
+    -0.011079523372746519,
+    -0.008556434238085357
+   ],
+   "UniMeth-Agn": [
+    0.008703958837646786,
+    0.012952319079941623
+   ]
+  }
+ },
+ "B: E. coli genome, Dam 6mA + Dcm 5mC + M.SssI 5mC vs knockouts": {
+  "RawMod": {
+   "pooled": 1.0,
+   "tpr1": 0.998,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.978,
+    "ecoli_dcm_5mC_reg": 0.999,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "Dorado 6mA": {
+   "pooled": 0.499,
+   "tpr1": 0.051,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 0.503,
+    "ecoli_mssi_5mC_reg": 0.496
+   }
+  },
+  "Dorado 4mC+5mC": {
+   "pooled": 0.95,
+   "tpr1": 0.942,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.499,
+    "ecoli_dcm_5mC_reg": 1.0,
+    "ecoli_mssi_5mC_reg": 0.999
+   }
+  },
+  "Dorado 5mC+5hmC": {
+   "pooled": 0.952,
+   "tpr1": 0.948,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.499,
+    "ecoli_dcm_5mC_reg": 1.0,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "Dorado 5mCG+5hmCG": {
+   "pooled": 0.921,
+   "tpr1": 0.916,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.5,
+    "ecoli_dcm_5mC_reg": 0.479,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "Dorado, all models (max)": {
+   "pooled": 1.0,
+   "tpr1": 0.997,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 1.0,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "UniMeth 5mC": {
+   "pooled": 0.95,
+   "tpr1": 0.948,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.499,
+    "ecoli_dcm_5mC_reg": 0.99,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "UniMeth 6mA": {
+   "pooled": 0.497,
+   "tpr1": 0.051,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 0.504,
+    "ecoli_mssi_5mC_reg": 0.495
+   }
+  },
+  "UniMeth, both models (max)": {
+   "pooled": 1.0,
+   "tpr1": 0.998,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 1.0,
+    "ecoli_dcm_5mC_reg": 0.99,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "UniMeth-FT (3 fine-tuned, max)": {
+   "pooled": 0.95,
+   "tpr1": 0.935,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.495,
+    "ecoli_dcm_5mC_reg": 0.955,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "UniMeth-Agn": {
+   "pooled": 1.0,
+   "tpr1": 0.997,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.953,
+    "ecoli_dcm_5mC_reg": 1.0,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "Rockfish": {
+   "pooled": 0.921,
+   "tpr1": 0.917,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.5,
+    "ecoli_dcm_5mC_reg": 0.479,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "DeepMod2": {
+   "pooled": 0.921,
+   "tpr1": 0.917,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.5,
+    "ecoli_dcm_5mC_reg": 0.479,
+    "ecoli_mssi_5mC_reg": 1.0
+   }
+  },
+  "Dorado, best single model": {
+   "pooled": 0.952,
+   "tpr1": 0.948,
+   "per_row": {
+    "ecoli_dam_6mA_reg": 0.499,
+    "ecoli_dcm_5mC_reg": 1.0,
+    "ecoli_mssi_5mC_reg": 1.0
+   },
+   "which": "Dorado 5mC+5hmC"
+  },
+  "ci": {
+   "Dorado, all models (max)": [
+    8.588310582100523e-05,
+    0.0001907675811764764
+   ],
+   "UniMeth, both models (max)": [
+    -6.281465165317024e-05,
+    -7.372757337642567e-07
+   ],
+   "UniMeth-Agn": [
+    0.00011743518652578278,
+    0.0001901895068781828
+   ]
+  }
+ },
+ "C: ONT oligonucleotides, 5mC + 5hmC + 6mA vs controls": {
+  "RawMod": {
+   "pooled": 0.939,
+   "tpr1": 0.667,
+   "per_row": {
+    "syn_5mC": 0.936,
+    "syn_5hmC": 0.953,
+    "syn_6mA": 0.927
+   }
+  },
+  "Dorado 6mA": {
+   "pooled": 0.563,
+   "tpr1": 0.333,
+   "per_row": {
+    "syn_5mC": 0.5,
+    "syn_5hmC": 0.5,
+    "syn_6mA": 1.0
+   }
+  },
+  "Dorado 4mC+5mC": {
+   "pooled": 0.73,
+   "tpr1": 0.667,
+   "per_row": {
+    "syn_5mC": 1.0,
+    "syn_5hmC": 1.0,
+    "syn_6mA": 0.512
+   }
+  },
+  "Dorado 5mC+5hmC": {
+   "pooled": 0.734,
+   "tpr1": 0.667,
+   "per_row": {
+    "syn_5mC": 1.0,
+    "syn_5hmC": 1.0,
+    "syn_6mA": 0.512
+   }
+  },
+  "Dorado 5mCG+5hmCG": {
+   "pooled": 0.519,
+   "tpr1": 0.117,
+   "per_row": {
+    "syn_5mC": 0.515,
+    "syn_5hmC": 0.539,
+    "syn_6mA": 0.512
+   }
+  },
+  "Dorado, all models (max)": {
+   "pooled": 1.0,
+   "tpr1": 1.0,
+   "per_row": {
+    "syn_5mC": 1.0,
+    "syn_5hmC": 1.0,
+    "syn_6mA": 1.0
+   }
+  },
+  "UniMeth 5mC": {
+   "pooled": 0.694,
+   "tpr1": 0.292,
+   "per_row": {
+    "syn_5mC": 0.949,
+    "syn_5hmC": 0.916,
+    "syn_6mA": 0.512
+   }
+  },
+  "UniMeth 6mA": {
+   "pooled": 0.56,
+   "tpr1": 0.3,
+   "per_row": {
+    "syn_5mC": 0.512,
+    "syn_5hmC": 0.5,
+    "syn_6mA": 0.982
+   }
+  },
+  "UniMeth, both models (max)": {
+   "pooled": 0.945,
+   "tpr1": 0.55,
+   "per_row": {
+    "syn_5mC": 0.948,
+    "syn_5hmC": 0.913,
+    "syn_6mA": 0.982
+   }
+  },
+  "UniMeth-FT (3 fine-tuned, max)": {
+   "pooled": 0.729,
+   "tpr1": 0.667,
+   "per_row": {
+    "syn_5mC": 1.0,
+    "syn_5hmC": 1.0,
+    "syn_6mA": 0.512
+   }
+  },
+  "UniMeth-Agn": {
+   "pooled": 1.0,
+   "tpr1": 1.0,
+   "per_row": {
+    "syn_5mC": 1.0,
+    "syn_5hmC": 1.0,
+    "syn_6mA": 1.0
+   }
+  },
+  "Rockfish": {
+   "pooled": 0.508,
+   "tpr1": 0.083,
+   "per_row": {
+    "syn_5mC": 0.49,
+    "syn_5hmC": 0.532,
+    "syn_6mA": 0.512
+   }
+  },
+  "DeepMod2": {
+   "pooled": 0.511,
+   "tpr1": 0.042,
+   "per_row": {
+    "syn_5mC": 0.5,
+    "syn_5hmC": 0.527,
+    "syn_6mA": 0.512
+   }
+  },
+  "Dorado, best single model": {
+   "pooled": 0.734,
+   "tpr1": 0.667,
+   "per_row": {
+    "syn_5mC": 1.0,
+    "syn_5hmC": 1.0,
+    "syn_6mA": 0.512
+   },
+   "which": "Dorado 5mC+5hmC"
+  },
+  "ci": {
+   "Dorado, all models (max)": [
+    -0.09485171261487048,
+    -0.03305112983055367
+   ],
+   "UniMeth, both models (max)": [
+    -0.046329812154829494,
+    0.03407337919533045
+   ],
+   "UniMeth-Agn": [
+    -0.09635443077019078,
+    -0.03376050651737925
+   ]
+  }
+ }
+}

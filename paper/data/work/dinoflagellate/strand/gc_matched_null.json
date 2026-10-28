@@ -1,0 +1,716 @@
+{
+ "plus": {
+  "strand": "plus",
+  "file": "contig_3762_strand+_scores.tsv.gz",
+  "n_within": 102,
+  "within_mean": 0.6411372454149984,
+  "within_gc_mean": 0.4166416285863564,
+  "within_gc_sd": 0.04445149403933916,
+  "contig_gc": 0.4306973228369263,
+  "regression": {
+   "beta_const": 0.13923661691250994,
+   "beta_gc": 0.6975449049659206,
+   "beta_log10len": 0.05806593876274768,
+   "resid_sd": 0.0809510002346095
+  },
+  "junctions": [
+   {
+    "kind": "convergent",
+    "start": 807293,
+    "end": 834402,
+    "length": 27109,
+    "gc": 0.485226308605998,
+    "n_sites": 7190,
+    "mean": 0.7744225617524338,
+    "frac05": 0.788038942976356,
+    "pct_among_within_gaps": 89.2156862745098,
+    "gc_matched_within_gaps": {
+     "n": 11,
+     "pct": 54.54545454545454,
+     "mean": 0.7573106632968017
+    },
+    "regression_resid_z": 0.48555185883164137,
+    "regression_pred": 0.7351166531142386,
+    "null_tol0.02": {
+     "n_eligible_starts": 11113,
+     "n_nonoverlapping": 74,
+     "eligible_span_kb": [
+      0,
+      7706
+     ],
+     "intergenic_sites": {
+      "n_draws": 408,
+      "null_mean": 0.7016070313274033,
+      "null_sd": 0.1335916578424593,
+      "null_p95": 0.8602413187740933,
+      "null_max": 0.9122068032790043,
+      "pct": 62.00980392156863,
+      "z": 0.5450604596201638,
+      "median_sites_per_draw": 1641.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.7466628680483954,
+      "null_sd": 0.06748415802492615,
+      "null_p95": 0.8581484428348143,
+      "null_max": 0.9221954117422527,
+      "pct": 67.2,
+      "z": 0.41135126400754696,
+      "median_sites_per_draw": 7133.0
+     }
+    },
+    "null_tol0.05": {
+     "n_eligible_starts": 33291,
+     "n_nonoverlapping": 165,
+     "eligible_span_kb": [
+      0,
+      7706
+     ],
+     "intergenic_sites": {
+      "n_draws": 406,
+      "null_mean": 0.671042674335017,
+      "null_sd": 0.11370612609717518,
+      "null_p95": 0.8490381837799219,
+      "null_max": 0.891249491018156,
+      "pct": 78.81773399014779,
+      "z": 0.9091848519143699,
+      "median_sites_per_draw": 1082.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.7105805911223929,
+      "null_sd": 0.06800035317945051,
+      "null_p95": 0.8371305647482621,
+      "null_max": 0.9209782948570688,
+      "pct": 83.5,
+      "z": 0.9388476330639673,
+      "median_sites_per_draw": 7315.0
+     }
+    },
+    "null_mosaic5kb": {
+     "n_blocks": 6,
+     "min_eligible_per_block": 766,
+     "median_eligible_per_block": 937.0,
+     "null_mean": 0.7926661201427948,
+     "null_sd": 0.04772930614416636,
+     "null_p95": 0.8652490625886691,
+     "null_max": 0.9235474782460028,
+     "pct": 32.9,
+     "z": -0.38222970045397886
+    }
+   },
+   {
+    "kind": "divergent",
+    "start": 3052608,
+    "end": 3136963,
+    "length": 84355,
+    "gc": 0.49961472349001246,
+    "n_sites": 19487,
+    "mean": 0.9276089378046903,
+    "frac05": 0.9380612716169754,
+    "pct_among_within_gaps": 100.0,
+    "gc_matched_within_gaps": {
+     "n": 8,
+     "pct": 100.0,
+     "mean": 0.7660765426597727
+    },
+    "regression_resid_z": 1.900277524065616,
+    "regression_pred": 0.7737795715082315,
+    "null_tol0.02": {
+     "n_eligible_starts": 515,
+     "n_nonoverlapping": 3,
+     "eligible_span_kb": [
+      3401,
+      5104
+     ],
+     "intergenic_sites": {
+      "n_draws": 237,
+      "null_mean": 0.7162326130900319,
+      "null_sd": 0.005452127929179793,
+      "null_p95": 0.7251015911947748,
+      "null_max": 0.7251015911947748,
+      "pct": 100.0,
+      "z": 38.76950934760209,
+      "median_sites_per_draw": 702.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.7680451873747841,
+      "null_sd": 0.014195608496825229,
+      "null_p95": 0.7896605414643244,
+      "null_max": 0.7920104434904054,
+      "pct": 100.0,
+      "z": 11.240360035682288,
+      "median_sites_per_draw": 20241.0
+     }
+    },
+    "null_tol0.05": {
+     "n_eligible_starts": 15860,
+     "n_nonoverlapping": 33,
+     "eligible_span_kb": [
+      0,
+      7649
+     ],
+     "intergenic_sites": {
+      "n_draws": 692,
+      "null_mean": 0.6858497932293852,
+      "null_sd": 0.10109681507534332,
+      "null_p95": 0.850704094877016,
+      "null_max": 0.8677231340769643,
+      "pct": 100.0,
+      "z": 2.3913626200304323,
+      "median_sites_per_draw": 1818.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.7044789098889118,
+      "null_sd": 0.043488284054234674,
+      "null_p95": 0.7663419067397033,
+      "null_max": 0.8099710977233249,
+      "pct": 100.0,
+      "z": 5.130807820274326,
+      "median_sites_per_draw": 22775.0
+     }
+    },
+    "null_mosaic5kb": {
+     "n_blocks": 17,
+     "min_eligible_per_block": 345,
+     "median_eligible_per_block": 943.0,
+     "null_mean": 0.7920157694475497,
+     "null_sd": 0.03011565023085699,
+     "null_p95": 0.8357791855872626,
+     "null_max": 0.884391502095742,
+     "pct": 100.0,
+     "z": 4.502415432432192
+    }
+   },
+   {
+    "kind": "convergent",
+    "start": 5218849,
+    "end": 5226986,
+    "length": 8137,
+    "gc": 0.4008848469952071,
+    "n_sites": 2353,
+    "mean": 0.6295229732256693,
+    "frac05": 0.6421589460263494,
+    "pct_among_within_gaps": 49.01960784313725,
+    "gc_matched_within_gaps": {
+     "n": 37,
+     "pct": 72.97297297297297,
+     "mean": 0.5915380023442827
+    },
+    "regression_resid_z": -0.20275978857990604,
+    "regression_pred": 0.6459365809185706,
+    "null_tol0.02": {
+     "n_eligible_starts": 26305,
+     "n_nonoverlapping": 499,
+     "eligible_span_kb": [
+      27,
+      7716
+     ],
+     "intergenic_sites": {
+      "n_draws": 223,
+      "null_mean": 0.6151855150895944,
+      "null_sd": 0.08034032839647724,
+      "null_p95": 0.750944968781027,
+      "null_max": 0.7977368987951282,
+      "pct": 53.36322869955157,
+      "z": 0.17845904320081876,
+      "median_sites_per_draw": 909.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.6034344551118442,
+      "null_sd": 0.06619095942015327,
+      "null_p95": 0.702869818667312,
+      "null_max": 0.924855578989264,
+      "pct": 70.19999999999999,
+      "z": 0.3941402019605997,
+      "median_sites_per_draw": 2414.5
+     }
+    },
+    "null_tol0.05": {
+     "n_eligible_starts": 47103,
+     "n_nonoverlapping": 686,
+     "eligible_span_kb": [
+      24,
+      7718
+     ],
+     "intergenic_sites": {
+      "n_draws": 207,
+      "null_mean": 0.6314606507596312,
+      "null_sd": 0.08479627611541775,
+      "null_p95": 0.7653955258582011,
+      "null_max": 0.8664939106933157,
+      "pct": 47.34299516908212,
+      "z": -0.022850974390956666,
+      "median_sites_per_draw": 844.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.6205375677775538,
+      "null_sd": 0.07703967380675092,
+      "null_p95": 0.7476969619615123,
+      "null_max": 0.9050730458317563,
+      "pct": 59.0,
+      "z": 0.11663348251778506,
+      "median_sites_per_draw": 2379.0
+     }
+    },
+    "null_mosaic5kb": {
+     "n_blocks": 2,
+     "min_eligible_per_block": 1013,
+     "median_eligible_per_block": 1027.5,
+     "null_mean": 0.6022181614295004,
+     "null_sd": 0.052685543839183134,
+     "null_p95": 0.6916088274919789,
+     "null_max": 0.753369135678358,
+     "pct": 69.6,
+     "z": 0.5182600350394769
+    }
+   },
+   {
+    "kind": "divergent",
+    "start": 7364585,
+    "end": 7456350,
+    "length": 91765,
+    "gc": 0.4856099820192884,
+    "n_sites": 23570,
+    "mean": 0.8510337224013577,
+    "frac05": 0.8644887568943572,
+    "pct_among_within_gaps": 99.01960784313727,
+    "gc_matched_within_gaps": {
+     "n": 11,
+     "pct": 90.9090909090909,
+     "mean": 0.7573106632968017
+    },
+    "regression_resid_z": 1.048780542551475,
+    "regression_pred": 0.7661338884552193,
+    "null_tol0.02": {
+     "n_eligible_starts": 3248,
+     "n_nonoverlapping": 11,
+     "eligible_span_kb": [
+      218,
+      7575
+     ],
+     "intergenic_sites": {
+      "n_draws": 721,
+      "null_mean": 0.6757192523680972,
+      "null_sd": 0.09084972368587932,
+      "null_p95": 0.8307628442271691,
+      "null_max": 0.8307628442271691,
+      "pct": 100.0,
+      "z": 1.929719353241241,
+      "median_sites_per_draw": 731.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.7163538740845001,
+      "null_sd": 0.04113659001123747,
+      "null_p95": 0.7687908707792845,
+      "null_max": 0.7831701018514801,
+      "pct": 100.0,
+      "z": 3.273967246192901,
+      "median_sites_per_draw": 24577.0
+     }
+    },
+    "null_tol0.05": {
+     "n_eligible_starts": 31101,
+     "n_nonoverlapping": 51,
+     "eligible_span_kb": [
+      0,
+      7642
+     ],
+     "intergenic_sites": {
+      "n_draws": 619,
+      "null_mean": 0.6780216116644672,
+      "null_sd": 0.0927754019018291,
+      "null_p95": 0.850704094877016,
+      "null_max": 0.8845695338065904,
+      "pct": 96.4458804523425,
+      "z": 1.864848949077735,
+      "median_sites_per_draw": 2377.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.6908281357606496,
+      "null_sd": 0.03992880451564774,
+      "null_p95": 0.7576522909816773,
+      "null_max": 0.7931716620036627,
+      "pct": 100.0,
+      "z": 4.012281073377114,
+      "median_sites_per_draw": 25239.0
+     }
+    },
+    "null_mosaic5kb": {
+     "n_blocks": 19,
+     "min_eligible_per_block": 852,
+     "median_eligible_per_block": 967.0,
+     "null_mean": 0.7768783620534273,
+     "null_sd": 0.032941166224869686,
+     "null_p95": 0.8262456332622414,
+     "null_max": 0.8768944408967106,
+     "pct": 99.7,
+     "z": 2.251145567880504
+    }
+   }
+  ]
+ },
+ "minus": {
+  "strand": "minus",
+  "file": "contig_3762_strand-_scores.tsv.gz",
+  "n_within": 102,
+  "within_mean": 0.5473575351196619,
+  "within_gc_mean": 0.4166416285863564,
+  "within_gc_sd": 0.04445149403933916,
+  "contig_gc": 0.4306973228369263,
+  "regression": {
+   "beta_const": 0.06703868121012789,
+   "beta_gc": 1.2195866686553933,
+   "beta_log10len": -0.007643679829301142,
+   "resid_sd": 0.12756701105444096
+  },
+  "junctions": [
+   {
+    "kind": "convergent",
+    "start": 807293,
+    "end": 834402,
+    "length": 27109,
+    "gc": 0.485226308605998,
+    "n_sites": 6765,
+    "mean": 0.8190209812269033,
+    "frac05": 0.8326681448632668,
+    "pct_among_within_gaps": 95.09803921568627,
+    "gc_matched_within_gaps": {
+     "n": 11,
+     "pct": 90.9090909090909,
+     "mean": 0.610202135517199
+    },
+    "regression_resid_z": 1.5214910295231205,
+    "regression_pred": 0.6249289182444946,
+    "null_tol0.02": {
+     "n_eligible_starts": 11113,
+     "n_nonoverlapping": 74,
+     "eligible_span_kb": [
+      0,
+      7706
+     ],
+     "intergenic_sites": {
+      "n_draws": 436,
+      "null_mean": 0.6720739703430508,
+      "null_sd": 0.14368586982524506,
+      "null_p95": 0.9352565031397111,
+      "null_max": 0.9580043995680324,
+      "pct": 80.96330275229357,
+      "z": 1.0226963240197082,
+      "median_sites_per_draw": 1700.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.7379304108369191,
+      "null_sd": 0.08617729571473072,
+      "null_p95": 0.8672128957317567,
+      "null_max": 0.9069867289860637,
+      "pct": 82.1,
+      "z": 0.9409737183957945,
+      "median_sites_per_draw": 6978.0
+     }
+    },
+    "null_tol0.05": {
+     "n_eligible_starts": 33291,
+     "n_nonoverlapping": 165,
+     "eligible_span_kb": [
+      0,
+      7706
+     ],
+     "intergenic_sites": {
+      "n_draws": 387,
+      "null_mean": 0.6255153956750986,
+      "null_sd": 0.15384083554638994,
+      "null_p95": 0.9188847265622826,
+      "null_max": 0.9533091667639488,
+      "pct": 88.37209302325581,
+      "z": 1.2578297879398477,
+      "median_sites_per_draw": 998.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.6846316028681563,
+      "null_sd": 0.10232797200100995,
+      "null_p95": 0.8411479770911305,
+      "null_max": 0.9072167287249012,
+      "pct": 91.7,
+      "z": 1.313320060300038,
+      "median_sites_per_draw": 7295.0
+     }
+    },
+    "null_mosaic5kb": {
+     "n_blocks": 6,
+     "min_eligible_per_block": 766,
+     "median_eligible_per_block": 937.0,
+     "null_mean": 0.6704582449443153,
+     "null_sd": 0.06639071272228378,
+     "null_p95": 0.7782238736936141,
+     "null_max": 0.8746153008013103,
+     "pct": 98.6,
+     "z": 2.2377035912241907
+    }
+   },
+   {
+    "kind": "divergent",
+    "start": 3052608,
+    "end": 3136963,
+    "length": 84355,
+    "gc": 0.49961472349001246,
+    "n_sites": 22723,
+    "mean": 0.7785812398890992,
+    "frac05": 0.7930730977423756,
+    "pct_among_within_gaps": 94.11764705882352,
+    "gc_matched_within_gaps": {
+     "n": 8,
+     "pct": 62.5,
+     "mean": 0.7043083216957247
+    },
+    "regression_resid_z": 1.0964646367174133,
+    "regression_pred": 0.6387085234561654,
+    "null_tol0.02": {
+     "n_eligible_starts": 515,
+     "n_nonoverlapping": 3,
+     "eligible_span_kb": [
+      3401,
+      5104
+     ],
+     "intergenic_sites": {
+      "n_draws": 240,
+      "null_mean": 0.7743427507053118,
+      "null_sd": 0.022183635054368735,
+      "null_p95": 0.8107422205322722,
+      "null_max": 0.8107422205322722,
+      "pct": 72.91666666666666,
+      "z": 0.19106378072843092,
+      "median_sites_per_draw": 611.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.7051791182619113,
+      "null_sd": 0.03943433364422478,
+      "null_p95": 0.809781883029468,
+      "null_max": 0.8149933252297704,
+      "pct": 93.5,
+      "z": 1.8613759849328102,
+      "median_sites_per_draw": 23060.5
+     }
+    },
+    "null_tol0.05": {
+     "n_eligible_starts": 15860,
+     "n_nonoverlapping": 33,
+     "eligible_span_kb": [
+      0,
+      7649
+     ],
+     "intergenic_sites": {
+      "n_draws": 678,
+      "null_mean": 0.6819074810439676,
+      "null_sd": 0.13491899245807715,
+      "null_p95": 0.9419263873045626,
+      "null_max": 0.9534706508232424,
+      "pct": 71.68141592920354,
+      "z": 0.7165318765270997,
+      "median_sites_per_draw": 1614.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.6977553741278572,
+      "null_sd": 0.07188714407067169,
+      "null_p95": 0.797331085500201,
+      "null_max": 0.8679880077188167,
+      "pct": 91.10000000000001,
+      "z": 1.1243438142678583,
+      "median_sites_per_draw": 22691.0
+     }
+    },
+    "null_mosaic5kb": {
+     "n_blocks": 17,
+     "min_eligible_per_block": 345,
+     "median_eligible_per_block": 943.0,
+     "null_mean": 0.724721963942614,
+     "null_sd": 0.04022761491957941,
+     "null_p95": 0.7894531606448643,
+     "null_max": 0.8784843984448344,
+     "pct": 91.4,
+     "z": 1.338863267289333
+    }
+   },
+   {
+    "kind": "convergent",
+    "start": 5218849,
+    "end": 5226986,
+    "length": 8137,
+    "gc": 0.4008848469952071,
+    "n_sites": 2522,
+    "mean": 0.5790371141950833,
+    "frac05": 0.5848532910388581,
+    "pct_among_within_gaps": 57.84313725490197,
+    "gc_matched_within_gaps": {
+     "n": 37,
+     "pct": 59.45945945945946,
+     "mean": 0.5355900846475553
+    },
+    "regression_resid_z": 0.4152715870752314,
+    "regression_pred": 0.526062159056062,
+    "null_tol0.02": {
+     "n_eligible_starts": 26305,
+     "n_nonoverlapping": 499,
+     "eligible_span_kb": [
+      27,
+      7716
+     ],
+     "intergenic_sites": {
+      "n_draws": 214,
+      "null_mean": 0.5029694359686386,
+      "null_sd": 0.11076175242193464,
+      "null_p95": 0.661475468738784,
+      "null_max": 0.8038787723574986,
+      "pct": 70.56074766355141,
+      "z": 0.6867684608011009,
+      "median_sites_per_draw": 837.0
+     },
+     "all_sites": {
+      "n_draws": 997,
+      "null_mean": 0.5212286590350877,
+      "null_sd": 0.1105113086369578,
+      "null_p95": 0.6919061021140424,
+      "null_max": 0.9131060759367287,
+      "pct": 69.40822467402207,
+      "z": 0.5230999060005967,
+      "median_sites_per_draw": 2435.0
+     }
+    },
+    "null_tol0.05": {
+     "n_eligible_starts": 47103,
+     "n_nonoverlapping": 686,
+     "eligible_span_kb": [
+      24,
+      7718
+     ],
+     "intergenic_sites": {
+      "n_draws": 206,
+      "null_mean": 0.5188156419193244,
+      "null_sd": 0.11761363206323149,
+      "null_p95": 0.6982887007298103,
+      "null_max": 0.8075983789956759,
+      "pct": 63.59223300970874,
+      "z": 0.5120279955590745,
+      "median_sites_per_draw": 820.0
+     },
+     "all_sites": {
+      "n_draws": 998,
+      "null_mean": 0.5522674685702084,
+      "null_sd": 0.11865198086826888,
+      "null_p95": 0.7353559392299734,
+      "null_max": 0.9117617956345362,
+      "pct": 55.71142284569138,
+      "z": 0.2256148226854757,
+      "median_sites_per_draw": 2378.5
+     }
+    },
+    "null_mosaic5kb": {
+     "n_blocks": 2,
+     "min_eligible_per_block": 1013,
+     "median_eligible_per_block": 1027.5,
+     "null_mean": 0.48113691472337927,
+     "null_sd": 0.06905957473523291,
+     "null_p95": 0.6046444836001579,
+     "null_max": 0.717297372623579,
+     "pct": 90.9,
+     "z": 1.4176194951539016
+    }
+   },
+   {
+    "kind": "divergent",
+    "start": 7364585,
+    "end": 7456350,
+    "length": 91765,
+    "gc": 0.4856099820192884,
+    "n_sites": 23621,
+    "mean": 0.7716942388975909,
+    "frac05": 0.7865458702002456,
+    "pct_among_within_gaps": 94.11764705882352,
+    "gc_matched_within_gaps": {
+     "n": 11,
+     "pct": 90.9090909090909,
+     "mean": 0.610202135517199
+    },
+    "regression_resid_z": 1.1785587105886661,
+    "regression_pred": 0.6213490268356189,
+    "null_tol0.02": {
+     "n_eligible_starts": 3248,
+     "n_nonoverlapping": 11,
+     "eligible_span_kb": [
+      218,
+      7575
+     ],
+     "intergenic_sites": {
+      "n_draws": 706,
+      "null_mean": 0.7527981002943503,
+      "null_sd": 0.11671142433839157,
+      "null_p95": 0.9419263873045626,
+      "null_max": 0.9419263873045626,
+      "pct": 52.69121813031161,
+      "z": 0.16190478961556803,
+      "median_sites_per_draw": 611.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.7423401638877974,
+      "null_sd": 0.04985230450985333,
+      "null_p95": 0.8371648705206025,
+      "null_max": 0.8573211535899904,
+      "pct": 73.8,
+      "z": 0.5888208237994621,
+      "median_sites_per_draw": 24082.0
+     }
+    },
+    "null_tol0.05": {
+     "n_eligible_starts": 31101,
+     "n_nonoverlapping": 51,
+     "eligible_span_kb": [
+      0,
+      7642
+     ],
+     "intergenic_sites": {
+      "n_draws": 610,
+      "null_mean": 0.6375982372118848,
+      "null_sd": 0.14365327484874674,
+      "null_p95": 0.9390283234320984,
+      "null_max": 0.9543609406803631,
+      "pct": 80.49180327868852,
+      "z": 0.9334698552949557,
+      "median_sites_per_draw": 2570.0
+     },
+     "all_sites": {
+      "n_draws": 1000,
+      "null_mean": 0.6630850721949603,
+      "null_sd": 0.07207900380026361,
+      "null_p95": 0.7729955352647407,
+      "null_max": 0.8569124114261497,
+      "pct": 94.69999999999999,
+      "z": 1.5068072666985646,
+      "median_sites_per_draw": 25152.5
+     }
+    },
+    "null_mosaic5kb": {
+     "n_blocks": 19,
+     "min_eligible_per_block": 852,
+     "median_eligible_per_block": 967.0,
+     "null_mean": 0.696064462643349,
+     "null_sd": 0.03798500776083841,
+     "null_p95": 0.759530689441668,
+     "null_max": 0.8036066467755341,
+     "pct": 97.7,
+     "z": 1.9910428011604713
+    }
+   }
+  ]
+ }
+}

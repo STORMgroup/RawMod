@@ -1,0 +1,3 @@
+fold	test_set	held_out	micro_f1	mod_f1	unmod_f1	macro_f1	mod_prec	mod_rec	auprc	auroc	auroc_sad	threshold	n_pos	n_test
+loco_4mC	region_4mC_subsampled	4mC	0.889680	0.272727	0.940313	0.606520	0.187373	0.500907	0.148022	0.815798		0.078475	551	13343
+loco_4mC	region_4mC_all_neg	4mC	0.889680	0.272727	0.940313	0.606520	0.187373	0.500907	0.148022	0.815798		0.078475	551	13343

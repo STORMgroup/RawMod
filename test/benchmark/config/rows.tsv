@@ -1,0 +1,46 @@
+# One line per benchmark row. Positions (gt = modified, cand = scored set; both 0-based "contig pos" BEDs) are in
+# test/data/rows/<row>/ or rebuilt from the reference (motif rows); the rows step installs them in $BENCH_WORK/rows/.
+# type one: positives = gt, negatives = cand minus gt, both on pos_sample.
+# type two: positives = gt on pos_sample, negatives = the same positions on neg_sample.
+# base: modified base on the + strand. A site's strand is set by the reference base at the position: base -> '+',
+# its complement -> '-'.
+# context: cpg | noncpg | any -- the context of the row's scored sites; a CpG-only subtool is N/A on noncpg rows.
+# The first 15 rows form the paper's benchmark (Table 1). The rep2 and _pb rows are additional rows: the oligonucleotide
+# replicate-2 libraries, and H. pylori J99 / T. denticola with PacBio ground truth.
+#row	chem	base	type	context	pos_sample	neg_sample	note
+ecoli_dam_6mA_ko	6mA	A	two	any	ecoli_wt_w1m	ecoli_dm_w1m	bench.motif_rows GATC[1]; wild type vs. dam- dcm- knockout at the same positions (NC_000913.3:0-1,000,000)
+ecoli_dcm_5mC_ko	5mC	C	two	noncpg	ecoli_wt_w1m	ecoli_dm_w1m	bench.motif_rows CCWGG[1]; wild type vs. dam- dcm- knockout at the same positions
+ecoli_mssi_5mC_ko	5mC	C	two	cpg	ecoli_mssi_w1m	ecoli_dm_w1m	bench.motif_rows CG[0]; dam- dcm- + M.SssI vs. dam- dcm- at the same CpGs
+anabaena_6mA	6mA	A	one	any	anabaena	-	bench.motif_rows GATC[1]; negatives = every other adenine (sequence-confounded)
+hp26695_4mC	4mC	C	two	any	hp26695	hp26695_wga	bench.motif_rows TCTTC[1], both strands; negatives = same positions in the WGA control
+hp26695_6mA	6mA	A	two	any	hp26695	hp26695_wga	bench.motif_rows GCATG[2], both strands (the A of CATG); negatives = same positions in the WGA control
+arabidopsis_cpg	5mC	C	one	cpg	arabidopsis_chr1	-	bench.bisulfite_rows: EM-seq >= 20x, CpG; reads: chromosome 1
+arabidopsis_noncpg	5mC	C	one	noncpg	arabidopsis_chr1	-	bench.bisulfite_rows: EM-seq >= 20x, CHG and CHH; reads: chromosome 1
+hg002_cpg	5mC	C	one	cpg	hg002	-	bench.bisulfite_rows: whole-genome bisulfite (Bismark) >= 20x, CpG
+rice_cpg	5mC	C	one	cpg	rice_w	-	bench.bisulfite_rows: EM-seq >= 20x, CpG
+mouse_cpg	5mC	C	one	cpg	mouse	-	bench.bisulfite_rows: EM-seq >= 20x, CpG, chromosome 1
+syn_5mC	5mC	C	two	any	syn_5mC	syn_control	ONT all-5-mer oligonucleotides: designed 5mC positions vs. the same positions in the control
+syn_5hmC	5hmC	C	two	any	syn_5hmC	syn_control	ONT all-5-mer oligonucleotides: designed 5hmC positions vs. the same positions in the control
+syn_6mA	6mA	A	two	any	syn_6mA	syn_control	ONT all-5-mer oligonucleotides: designed 6mA positions vs. the same positions in the control
+spo1_5hmU	5hmU	T	two	any	spo1_bc07	spo1_bc01	every thymine of native SPO1 (5hmU) vs. the same positions in PCR-amplified SPO1
+syn_5mC_rep2	5mC	C	two	any	syn_5mC_rep2	syn_control_rep2	as syn_5mC, replicate-2 libraries (never used in RawMod training)
+syn_5hmC_rep2	5hmC	C	two	any	syn_5hmC_rep2	syn_control_rep2	as syn_5hmC, replicate-2 libraries (never used in RawMod training)
+syn_6mA_rep2	6mA	A	two	any	syn_6mA_rep2	syn_control_rep2	as syn_6mA, replicate-2 libraries (never used in RawMod training)
+hpj99_4mC_pb	4mC	C	one	any	hpj99	-	bench.pacbio_rows: PacBio ipdSummary m4C calls in confirmed motifs vs. covered uncalled cytosines
+hpj99_6mA_pb	6mA	A	one	any	hpj99	-	bench.pacbio_rows: PacBio ipdSummary m6A calls in confirmed motifs vs. covered uncalled adenines
+tden_4mC_pb	4mC	C	one	any	tdenticola	-	bench.pacbio_rows: PacBio ipdSummary m4C calls in confirmed motifs vs. covered uncalled cytosines
+tden_6mA_pb	6mA	A	one	any	tdenticola	-	bench.pacbio_rows: PacBio ipdSummary m6A calls in confirmed motifs vs. covered uncalled adenines
+ecoli_dam_6mA_reg	6mA	A	two	any	ecoli_wt_wreg	ecoli_dm_wreg	bench.motif_rows: GATC[1]; wild type vs. dam- dcm- knockout at the same positions, reads starting in the held-out region NC_000913.3:1,740,816-2,437,064 (region-holdout benchmark)
+ecoli_dcm_5mC_reg	5mC	C	two	noncpg	ecoli_wt_wreg	ecoli_dm_wreg	bench.motif_rows: CCWGG[1]; as ecoli_dcm_5mC_ko, reads from the held-out region (region-holdout benchmark)
+ecoli_mssi_5mC_reg	5mC	C	two	cpg	ecoli_mssi_wreg	ecoli_dm_wreg	bench.motif_rows: CG[0]; as ecoli_mssi_5mC_ko, reads from the held-out region (region-holdout benchmark)
+arabidopsis_cpg_chr4	5mC	C	one	cpg	arabidopsis_chr4	-	bench.bisulfite_rows: EM-seq >= 20x, CpG; reads: chromosome 4 (NC_003075.7, the held-out chromosome; region-holdout benchmark)
+arabidopsis_noncpg_chr4	5mC	C	one	noncpg	arabidopsis_chr4	-	bench.bisulfite_rows: EM-seq >= 20x, CHG and CHH; reads: chromosome 4 (region-holdout benchmark)
+anabaena_6mA_reg	6mA	A	one	any	anabaena_reg	-	bench.motif_rows GATC[1]; negatives = every other adenine; reads starting on the held-out plasmids (region-holdout benchmark)
+hp26695_4mC_reg	4mC	C	two	any	hp26695_reg	hp26695_wga_reg	bench.motif_rows TCTTC[1], both strands; WGA control; reads starting in the held-out region NC_018939.1:1,076,458-1,326,642 (region-holdout benchmark)
+hp26695_6mA_reg	6mA	A	two	any	hp26695_reg	hp26695_wga_reg	bench.motif_rows GCATG[2], both strands; WGA control; reads starting in the held-out region NC_018939.1:1,076,458-1,326,642 (region-holdout benchmark)
+# the SPO1 row now uses the whitelisted read sets (config/read_whitelist.tsv; samples spo1_bc0{7,1}_regC, same
+# reads/basecall as spo1_bc0{7,1}_reg): PCR negatives = bc01 reads anchored at a bc02 primer / product end, native
+# positives = bc07 reads anchored at none, because the bc01 'PCR' library carries native template inside the region.
+# Previous definition (contaminated negatives):
+# spo1_5hmU_reg	5hmU	T	two	any	spo1_bc07_reg	spo1_bc01_reg	every thymine of native SPO1 vs. the same positions in PCR-amplified SPO1; reads starting in the held-out region FJ230960.1:52,619-72,503 (region-holdout benchmark)
+spo1_5hmU_reg	5hmU	T	two	any	spo1_bc07_regC	spo1_bc01_regC	every thymine of native SPO1 (non-anchored bc07 reads) vs. the same positions in PCR-amplified SPO1 (bc01 reads anchored at a bc02 primer / product end); reads starting in the held-out region FJ230960.1:52,619-72,503 (region-holdout benchmark)

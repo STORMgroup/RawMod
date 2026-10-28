@@ -1,0 +1,35 @@
+# What each subtool is documented to detect -- fixed before scoring, from each tool's own model list, and used only
+# by bench.paper_table. marks = modifications the model is trained to call; context = cpg (CpG-only) or any.
+# RawMod's single mixed model is trained on all five.
+#subtool	marks	context
+dorado_6mA	6mA	any
+dorado_4mC_5mC	4mC,5mC	any
+dorado_5mC_5hmC	5mC,5hmC	any
+dorado_5mCG_5hmCG	5mC,5hmC	cpg
+unimeth_5mC	5mC	any
+unimeth_6mA	6mA	any
+deepmod2	5mC	cpg
+rockfish	5mC	cpg
+methynano_Hsapiens	5mC	any
+methynano_Athaliana	5mC	any
+methynano_Osativa	5mC	any
+rawmod	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_ft_5hmC	5hmC	any
+unimeth_ft_4mC	4mC	any
+unimeth_ft_5hmU	5hmU	any
+unimeth_reg_5hmC	5hmC	any
+unimeth_reg_4mC	4mC	any
+unimeth_reg_5hmU	5hmU	any
+unimeth_agn	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_mod	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_reg	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_mod_reg	5mC,5hmC,6mA,4mC,5hmU	any
+uncalled4	5mC,5hmC,6mA,4mC,5hmU	any
+novamod	5mC,5hmC,6mA,4mC,5hmU	any
+novamod_pooled	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_lo_ecoli	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_lo_hp26695	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_lo_syn5mC	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_lo_syn5hmC	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_lo_syn6mA	5mC,5hmC,6mA,4mC,5hmU	any
+unimeth_agn_lo_spo1	5mC,5hmC,6mA,4mC,5hmU	any

@@ -1,0 +1,32 @@
+row	chem	n_sites	n_pos	own1	own1_called	own1_frac	status_own1	hac1	hac1_called	hac1_frac	status_hac1	fast1	fast1_called	fast1_frac	status_fast1	own1-noref	own1-noref_called	own1-noref_frac	status_own1-noref	hac1-noref	hac1-noref_called	hac1-noref_frac	status_hac1-noref	fast1-noref	fast1-noref_called	fast1-noref_frac	status_fast1-noref
+ecoli_dam_6mA_ko	6mA						pending												pending								
+ecoli_dcm_5mC_ko	5mC						pending												pending								
+ecoli_mssi_5mC_ko	5mC						pending												pending								
+anabaena_6mA	6mA						pending												pending								
+hp26695_4mC	4mC						pending												pending								
+hp26695_6mA	6mA						pending												pending								
+arabidopsis_cpg	5mC						pending												pending								
+arabidopsis_noncpg	5mC						pending												pending								
+hg002_cpg	5mC	1068.0000	640.0000	0.9900	0.9900	1.0000	ok	0.9901	0.9901	1.0000	ok	0.9882	0.9882	1.0000	ok	0.8933	0.8933	1.0000	ok	0.7667	0.7667	1.0000	ok	0.7411	0.7411	1.0000	ok
+rice_cpg	5mC	6189.0000	2667.0000	0.9990	0.9990	1.0000	ok	0.9990	0.9990	1.0000	ok	0.9989	0.9989	1.0000	ok	0.7288	0.7288	1.0000	ok	0.6596	0.6596	1.0000	ok	0.6131	0.6131	1.0000	ok
+mouse_cpg	5mC	85313.0000	77301.0000	0.9769	0.9769	1.0000	ok	0.9736	0.9736	1.0000	ok	0.9746	0.9746	1.0000	ok	0.7496	0.7496	1.0000	ok	0.6055	0.6055	1.0000	ok	0.5673	0.5673	1.0000	ok
+syn_5mC	5mC	80.0000	40.0000	0.9363	0.9363	1.0000	ok	0.8287	0.8287	1.0000	ok	0.2463	0.6156	0.7000	ok	0.6669	0.6669	1.0000	ok	0.4141	0.4141	1.0000	ok	0.1394	0.3484	0.7000	ok
+syn_5hmC	5hmC	80.0000	40.0000	0.9531	0.9531	1.0000	ok	0.7819	0.7819	1.0000	ok	0.0138	0.5500	0.5125	ok	0.7119	0.7119	1.0000	ok	0.5150	0.5150	1.0000	ok	0.0006	0.0250	0.5125	ok
+syn_6mA	6mA	80.0000	40.0000	0.9275	0.9275	1.0000	ok	0.6663	0.8328	0.9000	ok	0.1256	0.6281	0.6000	ok	0.7456	0.7456	1.0000	ok	0.3825	0.4781	0.9000	ok	0.0791	0.3953	0.6000	ok
+spo1_5hmU	5hmU						pending												pending								
+syn_5mC_rep2	5mC						pending												pending								
+syn_5hmC_rep2	5hmC						pending												pending								
+syn_6mA_rep2	6mA						pending												pending								
+hpj99_4mC_pb	4mC						pending												pending								
+hpj99_6mA_pb	6mA						pending												pending								
+tden_4mC_pb	4mC						pending												pending								
+tden_6mA_pb	6mA						pending												pending								
+ecoli_dam_6mA_reg	6mA	11178.0000	5597.0000	0.9782	0.9782	1.0000	ok	0.9743	0.9743	1.0000	ok	0.9750	0.9750	1.0000	ok	0.7090	0.7090	1.0000	ok	0.5669	0.5669	1.0000	ok	0.5625	0.5625	1.0000	ok
+ecoli_dcm_5mC_reg	5mC	7057.0000	3531.0000	0.9987	0.9987	1.0000	ok	0.9957	0.9957	1.0000	ok	0.9963	0.9963	1.0000	ok	0.7748	0.7748	1.0000	ok	0.5198	0.5198	1.0000	ok	0.5367	0.5367	1.0000	ok
+ecoli_mssi_5mC_reg	5mC	202322.0000	101197.0000	1.0000	1.0000	1.0000	ok	1.0000	1.0000	1.0000	ok	1.0000	1.0000	1.0000	ok	0.8496	0.8496	1.0000	ok	0.5157	0.5157	1.0000	ok	0.5005	0.5005	1.0000	ok
+arabidopsis_cpg_chr4	5mC	24815.0000	3956.0000	0.9939	0.9939	1.0000	ok	0.9934	0.9934	1.0000	ok	0.9935	0.9935	1.0000	ok	0.8019	0.8019	1.0000	ok	0.5238	0.5238	1.0000	ok	0.5351	0.5351	1.0000	ok
+arabidopsis_noncpg_chr4	5mC	48658.0000	87.0000	0.9565	0.9565	1.0000	ok	0.9493	0.9493	1.0000	ok	0.9500	0.9500	0.9999	ok	0.7585	0.7585	1.0000	ok	0.4998	0.4998	1.0000	ok	0.5373	0.5372	0.9999	ok
+anabaena_6mA_reg	6mA	52921.0000	2921.0000	0.9954	0.9954	1.0000	ok	0.9940	0.9940	1.0000	ok	0.9945	0.9945	1.0000	ok	0.7985	0.7985	1.0000	ok	0.6721	0.6721	1.0000	ok	0.6938	0.6938	1.0000	ok
+hp26695_4mC_reg	4mC	1388.0000	694.0000	0.9811	0.9811	1.0000	ok	0.9838	0.9838	1.0000	ok	0.9845	0.9845	1.0000	ok	0.6287	0.6287	1.0000	ok	0.6216	0.6216	1.0000	ok	0.5875	0.5875	1.0000	ok
+hp26695_6mA_reg	6mA	1698.0000	846.0000	0.9948	0.9948	1.0000	ok	0.9948	0.9948	1.0000	ok	0.9946	0.9946	1.0000	ok	0.6874	0.6874	1.0000	ok	0.6638	0.6638	1.0000	ok	0.6118	0.6118	1.0000	ok
+spo1_5hmU_reg	5hmU	5402.0000	2701.0000	0.9302	0.9302	1.0000	ok	0.9176	0.9176	1.0000	ok	0.9257	0.9257	1.0000	ok	0.3659	0.3659	1.0000	ok	0.4209	0.4209	1.0000	ok	0.4349	0.4349	1.0000	ok

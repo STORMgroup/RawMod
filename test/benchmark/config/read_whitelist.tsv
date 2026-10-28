@@ -1,0 +1,10 @@
+# Opt-in read whitelist of bench.readsel: samples listed here select their K reads per site from the listed
+# read ids only (file relative to test/data, or absolute; .gz allowed). Samples not listed use every primary read (qs >= MIN_QS).
+# spo1_bc0{1,7}_regC: the clean SPO1 5hmU row. The PCR library bc01 carries native 5hmU template inside the held-out
+# region, so its negatives are restricted to reads anchored at a bc02 PCR primer / product end (start 59,437 or end
+# 77,340 / 59,941 / 60,020 / 62,339 / 62,492, +-30 bp; qs >= 18, identity >= 0.98; 1,870 reads) and the native bc07
+# reads to those anchored at none (12,334 reads). Derived from the benchmark read sets by primer-anchoring (see the
+# paper's supplement); the samples share bam/pod5/reference with spo1_bc0{1,7}_reg (BENCH_SAMPLES sheet).
+#sample	read_ids
+spo1_bc01_regC	read_whitelist/spo1_bc01_regC.txt.gz
+spo1_bc07_regC	read_whitelist/spo1_bc07_regC.txt.gz

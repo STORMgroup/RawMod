@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rawmod"
+version = "0.1.0"
+description = "RawMod: modification-agnostic nanopore base-modification detection from raw signal"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy",
+  "pandas",
+  "scipy",
+  "h5py",
+  "pod5",
+  "pysam",
+  "torch",
+  "scikit-learn",
+  "matplotlib",
+  "tqdm",
+]
+
+[project.urls]
+Homepage = "https://github.com/STORMgroup/RawMod"
+Issues = "https://github.com/STORMgroup/RawMod/issues"
+
+# Signal refinement (rawmod/extern/refine_moves_remora.py) runs in a separate environment with
+# Remora and samtools; see README (Installation). Dorado is an external binary.
+[project.optional-dependencies]
+paper = ["umap-learn", "requests", "pyarrow"]   # Figure S2 embeddings; COLO829 ranged read fetch
+train = ["wandb"]                               # optional run logging in the trainers
+
+[project.scripts]
+rawmod-featurize = "rawmod.featurization:main"
+rawmod-visualize = "rawmod.visualization:main"
+rawmod-selftest = "rawmod.selftest:main"
+
+[tool.setuptools.packages.find]
+include = ["rawmod*"]
+
+[tool.setuptools.package-data]
+rawmod = ["extern/*.txt", "extern/*.md", "extern/*.py"]

@@ -1,0 +1,14 @@
+{
+ "n_fwd_reads": 14495,
+ "rho_score_mapq": -0.09666321287016173,
+ "rho_score_err": 0.1382314178920098,
+ "rho_score_depth": -0.11340803845100537,
+ "rho_score_repeat": 0.3799318591239518,
+ "rho_score_young": 0.22146031022940688,
+ "rho_score_cds": -0.49641431751649806,
+ "prho_repeat_given_align": 0.3891775447661534,
+ "prho_young_given_align": 0.2955335251313415,
+ "prho_cds_given_align_repeat": -0.3590245978763416,
+ "median_mapq": 60.0,
+ "median_err": 0.054491494830717725
+}

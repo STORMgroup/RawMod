@@ -1,0 +1,3 @@
+panel	series	pos_sites	n	auroc_mean	auroc_min	auroc_max
+A	A_finetune	0	1	0.4701	0.4701	0.4701
+A	A_pool	0	1	0.4701	0.4701	0.4701

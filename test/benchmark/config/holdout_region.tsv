@@ -1,0 +1,31 @@
+# Benchmark sample -> BED of the genomic region the region-holdout models never trained on (test/data/holdout/regions/,
+# copied from the regions the RawMod region model was trained without; every read overlapping them was excluded too).
+# BENCH_HOLDOUT=region keeps ONLY the sites inside the sample's region. Samples with no entry (mouse, rice_w) were never
+# in any training set and keep every site.
+#sample	bed
+ecoli_wt_wreg	ecoli_k12.bed
+ecoli_dm_wreg	ecoli_k12.bed
+ecoli_mssi_wreg	ecoli_k12.bed
+ecoli_wt_w1m	ecoli_k12.bed
+ecoli_dm_w1m	ecoli_k12.bed
+ecoli_mssi_w1m	ecoli_k12.bed
+anabaena	anabaena.bed
+hp26695	hpylori_26695.bed
+hp26695_wga	hpylori_26695.bed
+arabidopsis_chr1	athaliana.bed
+arabidopsis_chr4	athaliana.bed
+hg002	human.bed
+syn_5mC	ont_oligos.bed
+syn_5hmC	ont_oligos.bed
+syn_6mA	ont_oligos.bed
+syn_control	ont_oligos.bed
+spo1_bc01	spo1.bed
+spo1_bc07	spo1.bed
+anabaena_reg	anabaena.bed
+hp26695_reg	hpylori_26695.bed
+hp26695_wga_reg	hpylori_26695.bed
+spo1_bc01_reg	spo1.bed
+spo1_bc07_reg	spo1.bed
+# clean SPO1 samples: same reads and region as spo1_bc0{1,7}_reg
+spo1_bc01_regC	spo1.bed
+spo1_bc07_regC	spo1.bed

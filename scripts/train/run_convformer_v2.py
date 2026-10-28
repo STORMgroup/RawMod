@@ -1,0 +1,383 @@
+#!/usr/bin/env python3
+"""
+ConvFormer-v2: multi-scale (mini-Inception-style) per-read 1D conv
+trunk + the SAME cross-read Transformer as ConvFormer-v1.
+
+This is a controlled ablation, not a bigger model for its own sake. Comparing
+Inception vs ConvFormer-v1 showed a clean split:
+
+  - ConvFormer-v1 achieves genuine POSITIVE cross-dataset transfer on native
+    UMCES (umces_only mod_f1 0.392 -> both mod_f1 0.509 when ONT is added to
+    training) — Inception instead shows NEGATIVE transfer on both datasets when
+    combined (umces_only 0.440 -> both 0.369; ont_only 0.926 -> both 0.811).
+    ConvFormer-v1's lower train/val gap (train_loss 0.29 vs Inception's 0.03,
+    val_AUPRC 0.769 vs 0.689) indicates a genuinely better-regularized fit, not
+    just a different failure mode.
+  - But ConvFormer-v1 is intrinsically worse than Inception at the clean
+    synthetic ONT task, even in complete isolation (ont_only ONT mod_f1: 0.636
+    vs Inception's 0.926) — evidence the flat 3-layer conv trunk (32->64->96,
+    single kernel size per layer) lacks the multi-scale receptive-field
+    diversity of Inception's stem + 9 Inception blocks (1x1/3x3/5x5/7x1/1x7
+    branches) needed to capture ONT's fine local signal-deviation shape.
+
+ConvFormer-v2 tests that hypothesis directly: it swaps ONLY the conv trunk for
+a small multi-scale block (parallel kernel sizes, mirroring InceptionA) plus a
+grid-reduction block (mirroring InceptionB), while leaving the cross-read
+Transformer (the piece responsible for the positive-transfer effect) completely
+unchanged. If ONT recovers without losing the UMCES transfer gain, the trunk
+was the bottleneck, not the attention mechanism.
+
+  (B, 11, 31, 210)  -- per read, along the W (signal) axis --
+    stem:    Conv1d(11->32,k3) -> Conv1d(32->32,k3) -> Conv1d(32->48,k3,s2)  (W:210->105)
+    blockA:  4-branch multi-scale (1x1 / 1x1->5 / 1x1->3->3 / pool->1x1)     (48->64ch, W:105)
+    reduce:  3-branch grid reduction (3,s2 / 1x1->3->3,s2 / maxpool,s2)     (64->184ch, W:105->53)
+    proj:    Conv1d(184->96,k1) -> AdaptiveAvgPool1d(1)                     (-> 96-dim per-read embedding)
+    → (B, 31, 96) + row-position embed
+    → TransformerEncoder (2 layers, 4 heads, dim_ff=192)  [same as ConvFormer-v1, masked]
+    → masked mean-pool → LayerNorm → Dropout → Linear(1)
+
+Reuses the entire evaluation framework from run_pipeline.py via model_factory.
+
+Usage:
+  python run_convformer_v2.py --model {ont_only|umces_only|both} [--out-dir runs] [--epochs N]
+"""
+
+import os
+import argparse
+from pathlib import Path
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+import run_pipeline as R
+from model import ProjectionHead  # SupCon head from rawmod/model.py
+
+IN_CH, H, W = 11, 31, 210
+D_MODEL = 96  # identical to ConvFormer-v1 — keeps the transformer an exact match
+
+
+def conv_bn_relu_1d(in_ch, out_ch, k, stride=1, padding=0):
+    return nn.Sequential(
+        nn.Conv1d(in_ch, out_ch, k, stride=stride, padding=padding, bias=False),
+        nn.BatchNorm1d(out_ch), nn.ReLU(inplace=True),
+    )
+
+
+class InceptionA1d(nn.Module):
+    """4-branch multi-scale block (1D analogue of InceptionV3's InceptionA). m = width multiplier."""
+    def __init__(self, in_ch, pool_proj=8, m=1):
+        super().__init__()
+        self.b1 = conv_bn_relu_1d(in_ch, 16 * m, 1)
+        self.b2 = nn.Sequential(conv_bn_relu_1d(in_ch, 12 * m, 1), conv_bn_relu_1d(12 * m, 16 * m, 5, padding=2))
+        self.b3 = nn.Sequential(conv_bn_relu_1d(in_ch, 16 * m, 1),
+                                conv_bn_relu_1d(16 * m, 24 * m, 3, padding=1),
+                                conv_bn_relu_1d(24 * m, 24 * m, 3, padding=1))
+        self.b4 = nn.Sequential(nn.AvgPool1d(3, stride=1, padding=1), conv_bn_relu_1d(in_ch, pool_proj * m, 1))
+
+    def forward(self, x):
+        return torch.cat([self.b1(x), self.b2(x), self.b3(x), self.b4(x)], dim=1)
+
+
+class ReductionB1d(nn.Module):
+    """3-branch grid reduction, halves W (1D analogue of InceptionV3's InceptionB)."""
+    def __init__(self, in_ch, m=1):
+        super().__init__()
+        self.b1 = conv_bn_relu_1d(in_ch, 96 * m, 3, stride=2, padding=1)
+        self.b2 = nn.Sequential(conv_bn_relu_1d(in_ch, 16 * m, 1),
+                                conv_bn_relu_1d(16 * m, 24 * m, 3, padding=1),
+                                conv_bn_relu_1d(24 * m, 24 * m, 3, stride=2, padding=1))
+        self.b3 = nn.MaxPool1d(3, stride=2, padding=1)
+
+    def forward(self, x):
+        return torch.cat([self.b1(x), self.b2(x), self.b3(x)], dim=1)
+
+
+class ReadConvEncoderV2(nn.Module):
+    """Multi-scale per-read conv trunk: stem -> InceptionA1d -> ReductionB1d -> project."""
+    def __init__(self, in_ch=IN_CH, d_model=D_MODEL, m=1):
+        super().__init__()
+  # m = channel-width multiplier of the whole conv trunk
+        self.stem = nn.Sequential(
+            conv_bn_relu_1d(in_ch, 32 * m, 3, padding=1),
+            conv_bn_relu_1d(32 * m, 32 * m, 3, padding=1),
+            conv_bn_relu_1d(32 * m, 48 * m, 3, stride=2, padding=1),  # W: 210 -> 105
+        )
+        self.blockA = InceptionA1d(48 * m, pool_proj=8, m=m)  # 48 -> 16+16+24+8=64 ch (x m)
+        self.reduce = ReductionB1d(64 * m, m=m)  # 64 -> 96+24+64=184 ch (x m), W: 105->53
+        self.proj = conv_bn_relu_1d(184 * m, d_model, 1)
+        self.pool = nn.AdaptiveAvgPool1d(1)
+
+    def forward(self, x):  # x: (B*H, C, W)
+        x = self.stem(x)
+        x = self.blockA(x)
+        x = self.reduce(x)
+        x = self.proj(x)
+        return self.pool(x).squeeze(-1)  # (B*H, d_model)
+
+
+class _GradReverse(torch.autograd.Function):
+    """Identity forward; gradient multiplied by -lambda on the backward pass."""
+    @staticmethod
+    def forward(ctx, x, lambd):
+        ctx.lambd = lambd
+        return x.view_as(x)
+
+    @staticmethod
+    def backward(ctx, grad):
+        return grad.neg() * ctx.lambd, None
+
+
+def grad_reverse(x, lambd):
+    return _GradReverse.apply(x, lambd)
+
+
+class ConvFormerV2(nn.Module):
+    """
+    Two optional auxiliary training objectives hang off the pooled 96-d
+    representation `rep` (both no-ops at eval — forward() returns the logit
+    alone unless training AND an auxiliary is active):
+
+    * dann_lambda > 0 — a sequence-context adversary via a gradient-reversal
+      layer. It predicts the FLANKING reference bases (offsets ±1..±flank from
+      the candidate; the candidate base itself is NOT predicted, since 6mA=A /
+      5mC=C is legitimate signal). Gradient reversal drives `rep` to be
+      UNINFORMATIVE about the motif context, so the model cannot fire on a
+      recognition motif (e.g. GATC) from sequence alone. Targets are read
+      straight from the input tensor's reference row, so no extra labels.
+
+    * supcon_dim > 0 — a supervised-contrastive projection head (ProjectionHead
+      from rawmod/model.py) maps `rep` onto an L2-normalised sphere. The
+      SupCon loss itself is computed in the training loop (it needs the batch
+      labels, which forward() does not receive), so forward() only RETURNS the
+      projection embedding. SupCon pulls together every modified site and every
+      unmodified site regardless of source dataset, forcing the encoder to find
+      signal-level features shared across datasets rather than memorising a
+      dataset/motif-specific context — the direct counter to motif memorisation.
+
+    When training and any auxiliary is active, forward() returns
+    (logit, aux) where aux is a dict with keys among {'adv_loss', 'proj'}.
+    """
+    def __init__(self, in_ch=IN_CH, h=H, w=W, d_model=D_MODEL, nhead=4,
+                 layers=2, dim_ff=192, dropout=0.4,
+                 dann_lambda=0.0, dann_flank=4, window_positions=21,
+                 supcon_dim=0, sad_dim=0, org_adv_classes=0, org_adv_lambda=1.0,
+                 row_emb=True, read_aux=False, conv_mult=1):
+        super().__init__()
+        self.read_encoder = ReadConvEncoderV2(in_ch, d_model, m=conv_mult)
+  # Architecture ablations (defaults = the published model):
+  #   layers=0     no cross-read Transformer -- read tokens are mean-pooled directly
+  #   row_emb=False no learned row embedding -- the read set is order-invariant
+        if row_emb:
+            self.pos = nn.Parameter(torch.zeros(1, h, d_model))
+            nn.init.trunc_normal_(self.pos, std=0.02)
+        else:
+            self.register_buffer('pos', torch.zeros(1, h, d_model))
+        if layers > 0:
+            enc = nn.TransformerEncoderLayer(
+                d_model, nhead, dim_ff, dropout,
+                activation='gelu', batch_first=True, norm_first=True)
+            self.encoder = nn.TransformerEncoder(enc, layers)
+        else:
+            self.encoder = None
+        self.norm = nn.LayerNorm(d_model)
+        self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(d_model, 1))
+
+  # --- per-read head (READ_AUX_WEIGHT > 0 , after UniMeth-Agn) ---
+  # Scores every read from its OWN encoding (read_encoder output, before the
+  # cross-read Transformer), trained with the site label as each read's
+  # target. Dense per-read supervision, as a read-level caller like UniMeth
+  # gets. Training only; the site logit is unchanged at inference.
+        self.read_head = nn.Linear(d_model, 1) if read_aux else None
+
+  # --- supervised-contrastive projection head ---
+        self.supcon_dim = int(supcon_dim)
+        self.proj = (ProjectionHead(d_model, d_model, self.supcon_dim)
+                     if self.supcon_dim > 0 else None)
+
+  # --- Deep SAD one-class head (Ruff et al. 2019) ---
+  # Maps rep -> a small space where UNMODIFIED sites are pulled to a fixed
+  # centre and (seen) modifications are pushed away, so at test an UNSEEN
+  # chemistry also lands far from the centre. bias=False (Deep SVDD hygiene:
+  # a bias lets the net map everything to the centre, the trivial solution).
+  # The anomaly score used at inference is ||sad_head(rep) - sad_center||.
+  # sad_center is a buffer (fixed after init, saved in the checkpoint).
+        self.sad_dim = int(sad_dim)
+        self.sad_head = (nn.Linear(d_model, self.sad_dim, bias=False)
+                         if self.sad_dim > 0 else None)
+        if self.sad_head is not None:
+            self.register_buffer('sad_center', torch.zeros(self.sad_dim))
+        self._sad = None  # last sad embedding (set in forward)
+
+  # --- sequence-context adversary ---
+        self.dann_lambda = float(dann_lambda)
+        self.dann_flank = int(dann_flank)
+        self.Wp = int(window_positions)
+  # candidate at window centre; flanking offsets exclude 0
+        c = self.Wp // 2
+        self.flank_cols = [c + d for d in range(-self.dann_flank, self.dann_flank + 1)
+                           if d != 0 and 0 <= c + d < self.Wp]
+        if self.dann_lambda > 0:
+            self.adv = nn.Sequential(
+                nn.Linear(d_model, 128), nn.GELU(), nn.Dropout(dropout),
+                nn.Linear(128, len(self.flank_cols) * 4))
+
+  # --- organism/dataset adversary ---
+  # Gradient-reversed K-way organism classifier (ONT/SPO1/HP), same
+  # grad_reverse primitive as the sequence-context adversary above but a
+  # DIFFERENT target. Meant to erase organism substructure WITHIN the two
+  # SupCon-formed presence balls, not replace SupCon's attractive pull
+  # (gradient reversal alone supplies no pull, only erasure; SupCon supplies
+  # the pull). The loss itself
+  # (needs external organism labels) is computed in the training loop,
+  # same pattern as 'proj'/SupCon -- forward() only returns the logits.
+        self.org_adv_classes = int(org_adv_classes)
+        self.org_adv_lambda = float(org_adv_lambda)
+        self.org_adv_head = (nn.Linear(d_model, self.org_adv_classes)
+                             if self.org_adv_classes > 0 else None)
+
+  # --- signal->base auxiliary head (Rockfish) ---
+        self.aux_base_w = float(os.environ.get('AUX_BASE_WEIGHT', '0'))
+        self.aux_base_mask_p = float(os.environ.get('AUX_BASE_MASK_P', '0.15'))
+        self.aux_base_flip_p = float(os.environ.get('AUX_BASE_FLIP_P', '0.05'))
+        self.aux_base_mask_center = os.environ.get('AUX_BASE_MASK_CENTER', '0') == '1'
+        self.aux_base_head = (nn.Sequential(
+            nn.Linear(d_model, 128), nn.GELU(), nn.Dropout(dropout),
+            nn.Linear(128, self.Wp * 4)) if self.aux_base_w > 0 else None)
+
+    def _aux_base_mask(self, x):
+        """Rockfish-style signal->base auxiliary task.
+
+        Blank the base one-hots (ch 2-5) at a random subset of WINDOW POSITIONS
+        across every row, flip a further subset to a wrong base, then ask a head
+        to recover the true reference base there. The answer is no longer in the
+        input, so the only route to it is raw signal and dwell -- the model must
+        build a signal->nucleotide mapping.
+
+        Why this rather than PILEUP_MASK_BASES: blanking the base channels
+        outright (our best 5hmU result, 0.481 -> 0.572) DELETES the information.
+        This keeps it and makes the model derive it, which is the representation
+        that should carry to a base never seen modified. Flipped positions teach
+        signal-over-sequence precedence -- the stated base disagrees with the
+        signal, and the signal is right.
+
+        Returns (x_masked, targets (B,Wp), loss_mask (B,Wp)).
+        """
+        B = x.shape[0]
+        L = x.shape[3] // self.Wp
+        ref = x[:, 2:6, 0, :].view(B, 4, self.Wp, L).mean(dim=3)  # (B,4,Wp)
+        tgt = ref.argmax(dim=1)  # (B,Wp)
+        has_base = ref.sum(dim=1) > 0.05
+
+        r = torch.rand(B, self.Wp, device=x.device)
+        sel = (r < self.aux_base_mask_p) & has_base
+        flip = ((r >= self.aux_base_mask_p)
+                & (r < self.aux_base_mask_p + self.aux_base_flip_p) & has_base)
+        if not self.aux_base_mask_center:
+            c = self.Wp // 2
+            sel[:, c] = False
+            flip[:, c] = False
+
+        x = x.clone()
+        touched = (sel | flip).view(B, self.Wp, 1).expand(B, self.Wp, L).reshape(B, 1, 1, -1)
+        x[:, 2:6] = x[:, 2:6] * (~touched).to(x.dtype)
+        if bool(flip.any()):
+            wrong = (tgt + torch.randint(1, 4, tgt.shape, device=x.device)) % 4
+            oh = F.one_hot(wrong, 4).to(x.dtype).permute(0, 2, 1).unsqueeze(2)
+            oh = oh.repeat_interleave(L, dim=3)  # (B,4,1,W)
+            fc = flip.view(B, self.Wp, 1).expand(B, self.Wp, L).reshape(B, 1, 1, -1)
+            x[:, 2:6] = torch.where(fc.expand(-1, 4, x.shape[2], -1),
+                                    oh.expand(-1, -1, x.shape[2], -1), x[:, 2:6])
+        return x, tgt, (sel | flip)
+
+    def _flank_targets(self, x):
+        """Per-flank-position reference base index (0-3) + validity, from row 0."""
+        B = x.shape[0]
+        L = x.shape[3] // self.Wp
+        ref = x[:, 2:6, 0, :].view(B, 4, self.Wp, L).mean(dim=3)  # (B,4,Wp)
+        cols = torch.tensor(self.flank_cols, device=x.device)
+        oh = ref[:, :, cols]  # (B,4,F)
+        valid = oh.sum(dim=1) > 0.05  # (B,F) — position has a base
+        tgt = oh.argmax(dim=1)  # (B,F)
+        return tgt, valid
+
+    def forward(self, x):  # (B, C, H, W)
+        B, C, Hh, Ww = x.shape
+        aux_base = None
+        if self.training and self.aux_base_head is not None:
+            x, ab_tgt, ab_mask = self._aux_base_mask(x)
+            aux_base = (ab_tgt, ab_mask)
+        pad = x[:, 0].abs().sum(dim=2) < 1e-6  # (B, H); reference row never masked
+        pad[:, 0] = False
+
+        reads = x.permute(0, 2, 1, 3).reshape(B * Hh, C, Ww)
+        tok = self.read_encoder(reads).view(B, Hh, -1)
+        emb = tok + self.pos
+
+        enc = self.encoder(emb, src_key_padding_mask=pad) if self.encoder is not None else emb
+        keep = (~pad).unsqueeze(-1).float()
+        pooled = (enc * keep).sum(dim=1) / keep.sum(dim=1).clamp(min=1.0)
+        rep = self.norm(pooled)
+        logit = self.head(rep)
+
+  # Always compute the SAD embedding when the head exists, so it is available
+  # at eval (for centre init and anomaly scoring) as well as in training.
+        if self.sad_head is not None:
+            self._sad = self.sad_head(rep)
+
+        if self.training and (self.dann_lambda > 0 or self.proj is not None
+                              or self.sad_head is not None
+                              or self.org_adv_head is not None
+                              or self.aux_base_head is not None
+                              or self.read_head is not None):
+            aux = {}
+            if self.read_head is not None:
+                aux['read_logits'] = self.read_head(tok).squeeze(-1)  # (B, H)
+                rm = ~pad
+                rm[:, 0] = False  # row 0 = reference, not a read
+                aux['read_mask'] = rm
+            if aux_base is not None:
+                ab_tgt, ab_mask = aux_base
+                bl = self.aux_base_head(rep).view(B, self.Wp, 4)
+                ce = F.cross_entropy(bl.reshape(-1, 4), ab_tgt.reshape(-1),
+                                     reduction='none').view(B, self.Wp)
+                aux['aux_base_loss'] = self.aux_base_w * (
+                    (ce * ab_mask.float()).sum() / ab_mask.float().sum().clamp(min=1.0))
+            if self.dann_lambda > 0:
+                tgt, valid = self._flank_targets(x)  # (B,F)
+                adv_logits = self.adv(grad_reverse(rep, self.dann_lambda))
+                adv_logits = adv_logits.view(B, len(self.flank_cols), 4)
+                ce = F.cross_entropy(adv_logits.reshape(-1, 4), tgt.reshape(-1),
+                                     reduction='none').view(B, -1)
+                aux['adv_loss'] = ((ce * valid.float()).sum()
+                                   / valid.float().sum().clamp(min=1.0))
+            if self.proj is not None:
+  # L2-normalised contrastive embedding; the SupCon loss (which
+  # needs the batch labels) is applied in the training loop.
+                aux['proj'] = self.proj(rep)  # (B, supcon_dim)
+            if self.sad_head is not None:
+                aux['sad'] = self._sad  # (B, sad_dim)
+            if self.org_adv_head is not None:
+  # organism labels live outside x; loss computed in training loop
+                aux['org_adv_logits'] = self.org_adv_head(
+                    grad_reverse(rep, self.org_adv_lambda))  # (B, org_adv_classes)
+            return logit, aux
+        return logit
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--model', required=True, choices=['ont_only', 'umces_only', 'both'])
+    ap.add_argument('--out-dir', default=str(Path(__file__).resolve().parent / 'runs'))
+    ap.add_argument('--epochs', type=int, default=None)
+    args = ap.parse_args()
+
+    n = sum(p.numel() for p in ConvFormerV2().parameters())
+    print(f"ConvFormer-v2 — {n:,} params", flush=True)
+    R.run_experiment(args.model, args.out_dir,
+                     model_factory=lambda: ConvFormerV2(dropout=R.HP.dropout),
+                     epochs_override=args.epochs)
+
+
+if __name__ == '__main__':
+    main()

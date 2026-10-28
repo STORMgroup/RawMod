@@ -1,0 +1,15 @@
+{
+ "n_positions": 56252,
+ "n_pos": 12927,
+ "ari_mod_pos": 0.26080174293337294,
+ "ari_org_all": 0.03808006083514421,
+ "ari_org_neg": 0.018476161511264317,
+ "ari_label_all": 0.750894703109006,
+ "probe_mod_pos": 0.9480930048871995,
+ "probe_mod_pos_majority": 0.48534075965034423,
+ "probe_org_all": 0.9225627114626848,
+ "probe_org_all_majority": 0.7619995733485032,
+ "probe_org_neg": 0.9019965377957299,
+ "probe_org_neg_majority": 0.7763416041546451,
+ "auroc_check": 0.9872613541056662
+}

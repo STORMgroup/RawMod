@@ -1,0 +1,205 @@
+fold	seed	dataset	n_pos	n_neg	auroc
+loco_4mC	42	WGA	0	7884	
+loco_4mC	42	WT	551	4908	0.8873066603360268
+loco_4mC	43	WGA	0	7884	
+loco_4mC	43	WT	551	4908	0.8685526944416094
+loco_4mC	44	WGA	0	7884	
+loco_4mC	44	WT	551	4908	0.8774838147134129
+loco_5hmC	42	5hmC	40	160	0.92703125
+loco_5hmC	42	5mC	0	160	
+loco_5hmC	42	6mA	0	200	
+loco_5hmC	42	bc01	0	12	
+loco_5hmC	42	bc02	0	879	
+loco_5hmC	42	bc03	0	8	
+loco_5hmC	42	bc04	0	1	
+loco_5hmC	42	bc06	0	936	
+loco_5hmC	42	bc07	0	936	
+loco_5hmC	42	control	0	200	
+loco_5hmC	43	5hmC	40	160	0.9434375
+loco_5hmC	43	5mC	0	160	
+loco_5hmC	43	6mA	0	200	
+loco_5hmC	43	bc01	0	12	
+loco_5hmC	43	bc02	0	879	
+loco_5hmC	43	bc03	0	8	
+loco_5hmC	43	bc04	0	1	
+loco_5hmC	43	bc06	0	936	
+loco_5hmC	43	bc07	0	936	
+loco_5hmC	43	control	0	200	
+loco_5hmC	44	5hmC	40	160	0.974375
+loco_5hmC	44	5mC	0	160	
+loco_5hmC	44	6mA	0	200	
+loco_5hmC	44	bc01	0	12	
+loco_5hmC	44	bc02	0	879	
+loco_5hmC	44	bc03	0	8	
+loco_5hmC	44	bc04	0	1	
+loco_5hmC	44	bc06	0	936	
+loco_5hmC	44	bc07	0	936	
+loco_5hmC	44	control	0	200	
+loco_5hmU	42	bc01	0	13	
+loco_5hmU	42	bc02	0	1696	
+loco_5hmU	42	bc03	0	18	
+loco_5hmU	42	bc04	0	1	
+loco_5hmU	42	bc06	1785	0	
+loco_5hmU	42	bc07	1785	0	
+loco_5hmU	43	bc01	0	13	
+loco_5hmU	43	bc02	0	1696	
+loco_5hmU	43	bc03	0	18	
+loco_5hmU	43	bc04	0	1	
+loco_5hmU	43	bc06	1785	0	
+loco_5hmU	43	bc07	1785	0	
+loco_5hmU	44	bc01	0	13	
+loco_5hmU	44	bc02	0	1696	
+loco_5hmU	44	bc03	0	18	
+loco_5hmU	44	bc04	0	1	
+loco_5hmU	44	bc06	1785	0	
+loco_5hmU	44	bc07	1785	0	
+loco_5mC	42	5hmC	0	160	
+loco_5mC	42	5mC	40	160	0.970625
+loco_5mC	42	6mA	0	200	
+loco_5mC	42	Ecoli_DM_5kHz	0	15788	
+loco_5mC	42	Ecoli_DM_MSssI_5kHz	9866	5332	0.7709488218649027
+loco_5mC	42	Ecoli_WT_5kHz	343	15443	0.7783200291337523
+loco_5mC	42	WT	38	0	
+loco_5mC	42	arabidopsis	390	18945	0.7326800928463636
+loco_5mC	42	bc01	0	12	
+loco_5mC	42	bc02	0	879	
+loco_5mC	42	bc03	0	8	
+loco_5mC	42	bc04	0	1	
+loco_5mC	42	bc06	0	936	
+loco_5mC	42	bc07	0	936	
+loco_5mC	42	control	0	200	
+loco_5mC	42	hg001	193	42	0.5814211695040711
+loco_5mC	42	hg002	644	29	0.5519115442278861
+loco_5mC	43	5hmC	0	160	
+loco_5mC	43	5mC	40	160	0.981875
+loco_5mC	43	6mA	0	200	
+loco_5mC	43	Ecoli_DM_5kHz	0	15788	
+loco_5mC	43	Ecoli_DM_MSssI_5kHz	9866	5332	0.8243560864876669
+loco_5mC	43	Ecoli_WT_5kHz	343	15443	0.8257801802509331
+loco_5mC	43	WT	38	0	
+loco_5mC	43	arabidopsis	390	18945	0.7642425780430532
+loco_5mC	43	bc01	0	12	
+loco_5mC	43	bc02	0	879	
+loco_5mC	43	bc03	0	8	
+loco_5mC	43	bc04	0	1	
+loco_5mC	43	bc06	0	936	
+loco_5mC	43	bc07	0	936	
+loco_5mC	43	control	0	200	
+loco_5mC	43	hg001	193	42	0.586417468541821
+loco_5mC	43	hg002	644	29	0.6391893339044762
+loco_5mC	44	5hmC	0	160	
+loco_5mC	44	5mC	40	160	0.96921875
+loco_5mC	44	6mA	0	200	
+loco_5mC	44	Ecoli_DM_5kHz	0	15788	
+loco_5mC	44	Ecoli_DM_MSssI_5kHz	9866	5332	0.751962455949483
+loco_5mC	44	Ecoli_WT_5kHz	343	15443	0.7366887051395058
+loco_5mC	44	WT	38	0	
+loco_5mC	44	arabidopsis	390	18945	0.7219723761766517
+loco_5mC	44	bc01	0	12	
+loco_5mC	44	bc02	0	879	
+loco_5mC	44	bc03	0	8	
+loco_5mC	44	bc04	0	1	
+loco_5mC	44	bc06	0	936	
+loco_5mC	44	bc07	0	936	
+loco_5mC	44	control	0	200	
+loco_5mC	44	hg001	193	42	0.6293486306439674
+loco_5mC	44	hg002	644	29	0.5521792675091026
+loco_6mA	42	5hmC	0	195	
+loco_6mA	42	5mC	0	195	
+loco_6mA	42	6mA	40	155	0.5171774193548387
+loco_6mA	42	Ecoli_DM_5kHz	0	7648	
+loco_6mA	42	Ecoli_DM_MSssI_5kHz	0	7657	
+loco_6mA	42	Ecoli_WT_5kHz	523	7157	0.6340505264204027
+loco_6mA	42	WGA	0	13514	
+loco_6mA	42	WT	6226	7329	0.6095302591779148
+loco_6mA	42	bc01	0	18	
+loco_6mA	42	bc02	0	792	
+loco_6mA	42	bc03	0	5	
+loco_6mA	42	bc04	0	3	
+loco_6mA	42	bc06	5	834	0.35851318944844124
+loco_6mA	42	bc07	3	836	0.08433014354066984
+loco_6mA	42	control	0	195	
+loco_6mA	43	5hmC	0	195	
+loco_6mA	43	5mC	0	195	
+loco_6mA	43	6mA	40	155	0.5718548387096775
+loco_6mA	43	Ecoli_DM_5kHz	0	7648	
+loco_6mA	43	Ecoli_DM_MSssI_5kHz	0	7657	
+loco_6mA	43	Ecoli_WT_5kHz	523	7157	0.5468542076363752
+loco_6mA	43	WGA	0	13514	
+loco_6mA	43	WT	6226	7329	0.49794269621489234
+loco_6mA	43	bc01	0	18	
+loco_6mA	43	bc02	0	792	
+loco_6mA	43	bc03	0	5	
+loco_6mA	43	bc04	0	3	
+loco_6mA	43	bc06	5	834	0.48033573141486813
+loco_6mA	43	bc07	3	836	0.6349681020733653
+loco_6mA	43	control	0	195	
+loco_6mA	44	5hmC	0	195	
+loco_6mA	44	5mC	0	195	
+loco_6mA	44	6mA	40	155	0.5767741935483871
+loco_6mA	44	Ecoli_DM_5kHz	0	7648	
+loco_6mA	44	Ecoli_DM_MSssI_5kHz	0	7657	
+loco_6mA	44	Ecoli_WT_5kHz	523	7157	0.6681868370988732
+loco_6mA	44	WGA	0	13514	
+loco_6mA	44	WT	6226	7329	0.61687021976643
+loco_6mA	44	bc01	0	18	
+loco_6mA	44	bc02	0	792	
+loco_6mA	44	bc03	0	5	
+loco_6mA	44	bc04	0	3	
+loco_6mA	44	bc06	5	834	0.34016786570743407
+loco_6mA	44	bc07	3	836	0.21112440191387558
+loco_6mA	44	control	0	195	
+mixed	42	5hmC	40	668	0.986115269461078
+mixed	42	5mC	40	665	0.9953383458646616
+mixed	42	6mA	40	664	0.9718373493975904
+mixed	42	Ecoli_DM_5kHz	123	23436	0.7203579511473558
+mixed	42	Ecoli_DM_MSssI_5kHz	10570	12989	0.9972949493032199
+mixed	42	Ecoli_WT_5kHz	988	22600	0.9631616119092831
+mixed	42	WGA	0	21398	
+mixed	42	WT	9229	12237	0.9869014174163284
+mixed	42	arabidopsis	390	18945	0.9909332683679477
+mixed	42	bc01	0	43	
+mixed	42	bc02	0	3367	
+mixed	42	bc03	0	31	
+mixed	42	bc04	0	5	
+mixed	42	bc06	1790	1770	0.9993883155004261
+mixed	42	bc07	1788	1772	0.9992693325455381
+mixed	42	control	0	705	
+mixed	42	hg001	193	42	0.8171724648408586
+mixed	42	hg002	644	29	0.7541229385307346
+mixed	43	5hmC	40	668	0.9945359281437125
+mixed	43	5mC	40	665	0.9945112781954887
+mixed	43	6mA	40	664	0.9765436746987951
+mixed	43	Ecoli_DM_5kHz	123	23436	0.7904297744974377
+mixed	43	Ecoli_DM_MSssI_5kHz	10570	12989	0.9975694702154279
+mixed	43	Ecoli_WT_5kHz	988	22600	0.9749736662964422
+mixed	43	WGA	0	21398	
+mixed	43	WT	9229	12237	0.9893416249146535
+mixed	43	arabidopsis	390	18945	0.9816558052662565
+mixed	43	bc01	0	43	
+mixed	43	bc02	0	3367	
+mixed	43	bc03	0	31	
+mixed	43	bc04	0	5	
+mixed	43	bc06	1790	1770	0.9994822144367642
+mixed	43	bc07	1788	1772	0.9995294059720938
+mixed	43	control	0	705	
+mixed	43	hg001	193	42	0.8412287194670613
+mixed	43	hg002	644	29	0.7861426429642322
+mixed	44	5hmC	40	668	0.991130239520958
+mixed	44	5mC	40	665	0.995751879699248
+mixed	44	6mA	40	664	0.9829819277108435
+mixed	44	Ecoli_DM_5kHz	123	23436	0.7412168687739104
+mixed	44	Ecoli_DM_MSssI_5kHz	10570	12989	0.9973284541107594
+mixed	44	Ecoli_WT_5kHz	988	22600	0.9699370543871592
+mixed	44	WGA	0	21398	
+mixed	44	WT	9229	12237	0.987479257255614
+mixed	44	arabidopsis	390	18945	0.9880347970846782
+mixed	44	bc01	0	43	
+mixed	44	bc02	0	3367	
+mixed	44	bc03	0	31	
+mixed	44	bc04	0	5	
+mixed	44	bc06	1790	1770	0.9994023608875422
+mixed	44	bc07	1788	1772	0.9995631776427752
+mixed	44	control	0	705	
+mixed	44	hg001	193	42	0.8550456452010857
+mixed	44	hg002	644	29	0.7483936603127007

@@ -1,0 +1,3 @@
+fold	test_set	held_out	micro_f1	mod_f1	unmod_f1	macro_f1	mod_prec	mod_rec	auprc	auroc	auroc_sad	threshold	n_pos	n_test
+mixed	region_subsampled		0.956576	0.907707	0.971609	0.939658	0.893392	0.922488	0.960044	0.987457		0.882913	12927	55845
+mixed	region_all_neg		0.957086	0.908087	0.972008	0.940048	0.894129	0.922488	0.960196	0.987573		0.882913	12927	56252

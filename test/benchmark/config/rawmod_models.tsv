@@ -1,0 +1,16 @@
+# RawMod checkpoints the benchmark can score. name = the subtool name used in tables (prefixed rawmod_ in work directories);
+# checkpoint = path relative to the repository root; mask_bases / drop_ch9 = featurization flags of the model (0 for every shipped model).
+# Select with BENCH_RAWMOD=name[,name,...]; the default is `rawmod` (the Table 1 column). The leave-out models are scored by
+# `rawmod_bench.py leaveout` as logo_<name>.
+rawmod	checkpoints/region_holdout/mixed.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# the RawMod column of Table 1: trained without the held-out regions
+released	checkpoints/rawmod.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# the released model, trained on all data (not held out; for scoring new data)
+logo_ecoli	checkpoints/leaveout/ecoli.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: ecoli withheld (supplementary leave-out table)
+logo_anabaena	checkpoints/leaveout/anabaena.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: anabaena withheld (supplementary leave-out table)
+logo_hp26695	checkpoints/leaveout/hp26695.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: hp26695 withheld (supplementary leave-out table)
+logo_plant	checkpoints/leaveout/plant.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: plant withheld (supplementary leave-out table)
+logo_mammal	checkpoints/leaveout/mammal.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: mammal withheld (supplementary leave-out table)
+logo_ont5mC	checkpoints/leaveout/ont5mC.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: ont5mC withheld (supplementary leave-out table)
+logo_ont5hmC	checkpoints/leaveout/ont5hmC.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: ont5hmC withheld (supplementary leave-out table)
+logo_ont6mA	checkpoints/leaveout/ont6mA.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: ont6mA withheld (supplementary leave-out table)
+logo_spo1	checkpoints/leaveout/spo1.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: spo1 withheld (supplementary leave-out table)
+logo_j99tden	checkpoints/leaveout/j99tden.pt	0	0	5mC,5hmC,6mA,4mC,5hmU	# leave-out model: H. pylori J99 and T. denticola withheld (PacBio rows)
