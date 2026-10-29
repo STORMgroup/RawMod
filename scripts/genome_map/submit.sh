@@ -26,10 +26,19 @@
 #
 # Tool locations and SLURM arguments are read from the config file, the environment or
 # ~/.config/rawmod/paths.env (see paths.env.example and config.example.env).
+# Needs bash >= 4 (associative arrays). macOS ships bash 3.2: install a newer one (brew install bash) and run
+# this script with it, e.g. `$(brew --prefix)/bin/bash scripts/genome_map/run_local.sh ...`.
+if [ -z "${BASH_VERSINFO:-}" ] || [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
+  echo "RawMod genome map: needs bash >= 4, this is bash ${BASH_VERSION:-unknown}. On macOS: brew install bash," >&2
+  echo "then run this script with that bash (\$(brew --prefix)/bin/bash $0 ...)." >&2
+  exit 1
+fi
 set -euo pipefail
 GM_DIR=$(cd "$(dirname "$0")" && pwd)
 REPO_ROOT=$(cd "$GM_DIR/../.." && pwd)
 set -a; source "${RAWMOD_PATHS_FILE:-$HOME/.config/rawmod/paths.env}" 2>/dev/null || true; set +a
+
+abspath() { case $1 in /*) printf '%s\n' "$1";; *) printf '%s\n' "$PWD/${1#./}";; esac; }  # no GNU readlink needed
 
 DRY=0; LOCAL=${RAWMOD_LOCAL:-0}; FROM=basecall; UNTIL=score; CFG_IN=""; declare -A F=()
 while [[ $# -gt 0 ]]; do
@@ -44,7 +53,7 @@ while [[ $# -gt 0 ]]; do
     --strands) F[STRANDS]=$2; shift 2;; --contigs) F[CONTIGS]=$2; shift 2;;
     --name) F[NAME]=$2; shift 2;;      --checkpoint) F[CHECKPOINTS]="mixed=$2"; shift 2;;
     -h|--help) sed -n '2,26p' "$0"; exit 0;;
-    *.env) CFG_IN=$(readlink -f "$1"); shift;;
+    *.env) CFG_IN=$(abspath "$1"); shift;;
     *) echo "unknown argument: $1 (see --help)"; exit 1;;
   esac
 done
@@ -53,7 +62,7 @@ for k in "${!F[@]}"; do printf -v "$k" '%s' "${F[$k]}"; done
 
 # defaults
 : "${OUT:?--out is required}" "${POD5:?--pod5 is required}" "${REF:?--ref is required}"
-OUT=$(readlink -m "$OUT")
+OUT=$(abspath "$OUT")
 NAME=${NAME:-$(basename "$OUT")}
 TARGET_BASE=${TARGET_BASE:-T}; STRANDS=${STRANDS:-+}; CONTIGS=${CONTIGS:-}; SITES=${SITES:-}
 BAM=${BAM:-}; CHUNKS=${CHUNKS:-24}; REFINE_SHARDS=${REFINE_SHARDS:-16}
@@ -112,7 +121,7 @@ sub () {  # sub NAME RESOURCES... -- SCRIPT ; echoes the job id, chained on $dep
     for ((i = 0; i <= last; i++)); do
       echo "[$(date +%H:%M:%S)] $name task $i/$last" >&2
       SLURM_ARRAY_TASK_ID=$i SLURM_ARRAY_TASK_COUNT=$((last + 1)) \
-        bash "$1" 2>&1 | tee -a "$log" >&2
+        "$BASH" "$1" 2>&1 | tee -a "$log" >&2
     done
     echo "LOCAL_$name"; return
   fi

@@ -141,7 +141,7 @@ def main(src, dst):
             out.append(' & '.join(sel) + r' \\')
         else:
             out.append(l)
-    out = [l.replace(r'\textbf{Mean over the five modifications}', r'\textbf{Mean}').replace('Worst modification &', 'Worst &')
+    out = [l.replace(r'\textbf{Mean over the five modifications}', r'\textbf{Mean over 5 types}').replace('Worst modification &', 'Worst type &')
            .replace(r'\hspace{3pt}', r'\hspace{2pt}') for l in out]
     # parameter counts to two significant figures: the full-precision cells were the widest in their columns
     out = [re.sub(r'\b100\.3M', '100M', re.sub(r'\b34\.7M', '35M', re.sub(r'\b1\.80M', '1.8M', l)))

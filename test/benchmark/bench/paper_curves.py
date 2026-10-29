@@ -125,6 +125,10 @@ def main():
         cache, curves, summ = {}, [], []
         for row in sel:
             r = rows[row]
+            missing = Sc.row_missing(r, S)
+            if missing:
+                print(f'[skip] {row}: not downloaded or not built ({missing[0]})')
+                continue
             blocks = Sc.row_sites(r, S, cache)
             y = np.concatenate([b[2] for b in blocks])
             cpg = None

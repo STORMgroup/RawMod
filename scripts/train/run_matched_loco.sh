@@ -32,8 +32,13 @@ done
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DRIVER="${REPO_DIR}/run_matched_loco.py"
-OUT=${RAWMOD_RESULTS}/rawmod_matched_loco
-OUTDIR=${OUTDIR:-${OUT}/runs}
+# OUTDIR (where the models, metrics and logs go) wins; otherwise $RAWMOD_RESULTS/rawmod_matched_loco/runs.
+if [ -n "${OUTDIR:-}" ]; then
+    OUT=${OUTDIR}
+else
+    OUT=${RAWMOD_RESULTS:?set OUTDIR (or RAWMOD_RESULTS in paths.env)}/rawmod_matched_loco
+    OUTDIR=${OUT}/runs
+fi
 LOGDIR=${OUT}/logs
 PYTHON=${RAWMOD_PYTHON:-${RAWMOD_ENV:+${RAWMOD_ENV}/bin/python}}
 PYTHON=${PYTHON:-$(command -v python3)}
@@ -106,7 +111,7 @@ SAD_DIM=${SAD_DIM:-0} SAD_WEIGHT=${SAD_WEIGHT:-1.0} SAD_ETA=${SAD_ETA:-1.0} \
 BCE_WEIGHT=${BCE_WEIGHT:-1.0} \
 RAWMOD_DATA_GEN=${RAWMOD_DATA_GEN:-} EXTRA_ORGANISMS=${EXTRA_ORGANISMS:-0} \
 INCLUDE_HUMAN=${INCLUDE_HUMAN:-0} TF_LAYERS=${TF_LAYERS:-2} ROW_EMB=${ROW_EMB:-1} \
-RAWMOD_STRANDRES_ROOT=${RAWMOD_STRANDRES_ROOT:-${RAWMOD_STORE}/rawmod_strand_resolved/features} \
+RAWMOD_STRANDRES_ROOT=${RAWMOD_STRANDRES_ROOT:?set RAWMOD_STRANDRES_ROOT to the training feature directory} \
 RAWMOD_DROP_CH9=${RAWMOD_DROP_CH9:-0} \
 ${PYTHON} ${DRIVER} --fold ${FOLD} --out-dir ${OUTDIR} ${EPOCHS_ARG} ${SEED_ARG}"
     if ${LOCAL}; then

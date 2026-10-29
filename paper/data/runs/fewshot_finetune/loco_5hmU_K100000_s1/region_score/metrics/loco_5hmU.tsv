@@ -1,0 +1,3 @@
+fold	test_set	held_out	micro_f1	mod_f1	unmod_f1	macro_f1	mod_prec	mod_rec	auprc	auroc	auroc_sad	threshold	n_pos	n_test
+loco_5hmU	region_5hmU_subsampled	5hmU	0.761608	0.836463	0.560390	0.698426	0.777751	0.904762	0.861302	0.789640		0.482964	3570	5298
+loco_5hmU	region_5hmU_all_neg	5hmU	0.761608	0.836463	0.560390	0.698426	0.777751	0.904762	0.861302	0.789640		0.482964	3570	5298

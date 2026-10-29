@@ -56,26 +56,40 @@ tables.
 | Requirement | Version | Needed for |
 |---|---|---|
 | Python | 3.10 or later (we use 3.11) | everything |
-| PyTorch | any recent version; installed by `pip` | scoring and training |
+| PyTorch | a CUDA 12.6 build, installed before RawMod (see [Quick start](#quick-start)) | scoring and training |
 | NVIDIA GPU | optional | fast scoring and training; scoring also runs on CPU |
 | [Dorado](https://github.com/nanoporetech/dorado) | 1.4.0, model `dna_r10.4.1_e8.2_400bps_sup@v5.0.0` | basecalling with move tables |
 | [Remora](https://github.com/nanoporetech/remora) and [samtools](https://github.com/samtools/samtools) | Remora 3.3.0, samtools 1.16 or later | aligning the raw signal to reference bases |
+| Linux, bash 4 or later | | the pipeline launchers (`scripts/genome_map/`, `scripts/train/`, `test/evaluation/`); see the note below |
 | SLURM | optional | running the pipelines as cluster jobs |
 
-Remora runs in its own Python environment. RawMod calls it through
+Remora runs in its own Python environment. Remora 3.3.0 requires `numpy<2`, so installing it next to RawMod
+silently downgrades numpy to 1.26. Keep the two environments separate. RawMod calls Remora through
 `rawmod/extern/refine_moves_remora.py`. This script and the table of expected
 signal levels (`uncalled_r1041_model_only_means.txt`) are included in
 [`rawmod/extern/`](rawmod/extern/NOTICE.md). They need no separate installation.
 
 ## Quick start
 
-* Clone the code from its GitHub repository and install it:
+* Clone the code from its GitHub repository:
 
 ```bash
 git clone https://github.com/STORMgroup/RawMod.git
 cd RawMod
+```
+
+* Install PyTorch first, then RawMod:
+
+```bash
+pip install torch --index-url https://download.pytorch.org/whl/cu126
 pip install -e .
 ```
+
+Without the first line, `pip` installs the newest PyTorch build, currently for CUDA 13. CUDA 13 builds have
+no kernels for Pascal GPUs such as the GTX 1080 Ti, and scoring then fails with "no kernel image is
+available". The CUDA 12.6 build runs on Pascal and on newer GPUs. The paper's results were produced with torch 2.12, and
+torch 2.14.1 (CUDA 12.6) reproduces the benchmark. For a CPU-only machine, use
+`--index-url https://download.pytorch.org/whl/cpu`.
 
 * Check the installation:
 
@@ -98,6 +112,10 @@ cp paths.env.example ~/.config/rawmod/paths.env
 See [Site configuration](#site-configuration) for details.
 
 All commands below are run from the repository root (`RawMod/`).
+
+The shell launchers need Linux with bash 4 or later. macOS ships bash 3.2: install a newer bash
+(`brew install bash`) and run the launchers with it. The genome-map launchers stop with a message on older
+versions.
 
 `pip install -e ".[paper]"` adds the packages that some paper scripts need: UMAP
 for Figure S2, and a ranged POD5 reader for the COLO829 walkthrough.
@@ -391,13 +409,15 @@ CTRL_TARGET_BASE_TO_TEST=orphan NEG_CAP_SPO1=200000 \
 PILEUP_MASK_BASES=0 BCE_WEIGHT=1.0 \
 SUPCON_WEIGHT=1.0 SUPCON_DIM=128 SUPCON_TEMP=0.20 \
 SAD_DIM=16 SAD_LOSS=hinge SAD_MARGIN=2.0 SAD_WEIGHT=1.0 SAD_ETA=1.0 \
+RAWMOD_AMP=1 \
 OUTDIR=/path/to/output \
 bash run_matched_loco.sh --seed 42
 ```
 
 The losses are binary cross-entropy (`BCE_*`), supervised contrastive learning
 (`SUPCON_*`, weight 1.0, temperature 0.20) and Deep SAD anomaly detection with a
-hinge loss (`SAD_*`, 16 dimensions). `CURRICULUM=1` turns on the curriculum.
+hinge loss (`SAD_*`, 16 dimensions). `CURRICULUM=1` turns on the curriculum. `RAWMOD_AMP=1` trains
+in bfloat16 mixed precision, as the released models were; it needs an Ampere or newer GPU.
 
 * `--dry-run` prints the job submissions without running them.
 * `FOLDS` selects a subset of models, for example `FOLDS="mixed loco_6mA"`.

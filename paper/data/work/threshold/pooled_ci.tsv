@@ -1,0 +1,5 @@
+tool	n_rows	n_sites	auroc	lo	hi	thr_1pct_fpr
+rawmod	15	21481	0.9862	0.9849	0.9875	0.9928
+dorado	15	21481	0.8979	0.8933	0.9030	0.7598
+unimeth	15	21481	0.8930	0.8873	0.8984	0.1948
+unimeth_agn_mod_reg	15	21481	0.9720	0.9704	0.9737	0.9272

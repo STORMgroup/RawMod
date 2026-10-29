@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -34,6 +35,18 @@ def rows_cfg():
             c = line.rstrip('\n').split('\t')
             out.append(dict(row=c[0], chem=c[1], base=c[2], type=c[3], context=c[4], pos_sample=c[5],
                             neg_sample=None if c[6] == '-' else c[6], note=c[7] if len(c) > 7 else ''))
+    return out
+
+
+def row_missing(r, S):
+    """What a row still needs before it can be scored: its installed site files (rows step) and the reference of each
+    of its samples. Empty when the row is ready; a partial benchmark (some datasets not downloaded) skips the others."""
+    R = C.WORK / 'rows' / r['row']
+    need = [R / 'gt.bed'] + ([R / 'cand.bed'] if r['type'] == 'one' else [])
+    out = [str(p) for p in need if not p.exists()]
+    for smp in filter(None, (r['pos_sample'], r['neg_sample'])):
+        if smp not in S or not Path(S[smp]['ref']).exists():
+            out.append(f'reference of sample {smp}')
     return out
 
 

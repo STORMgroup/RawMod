@@ -12,4 +12,4 @@
 set -euo pipefail
 GM_DIR=$(cd "$(dirname "$0")" && pwd)
 export GM_DIR RAWMOD_LOCAL=1
-exec "$GM_DIR/submit.sh" --local "$@"
+exec "$BASH" "$GM_DIR/submit.sh" --local "$@"

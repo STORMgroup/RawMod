@@ -54,6 +54,10 @@ def main():
     for r in Sc.rows_cfg():
         if only and r['row'] not in only:
             continue
+        missing = Sc.row_missing(r, S)
+        if missing:
+            print(f"[skip] {r['row']}: not downloaded or not built ({missing[0]})")
+            continue
         blocks = Sc.row_sites(r, S, cache)
         seqs, y, grp = [], [], []
         rng = np.random.default_rng(0)
@@ -81,7 +85,7 @@ def main():
         out.append(res)
         print(f"[{r['row']}] n={res['n']:,} ref11={res.get('ref11', np.nan):.3f} cpg={res.get('cpg', np.nan):.3f}")
     path = C.WORK / f'nulls_{C.PAPER_TAG}.tsv'
-    df = pd.DataFrame(out)
+    df = pd.DataFrame(out, columns=['row', 'n', 'n_pos', 'ref11', 'cpg'])  # columns kept when every row was skipped
     if only and path.exists():  # partial run: keep the rows it did not touch
         old = pd.read_csv(path, sep='\t')
         df = pd.concat([old[~old['row'].isin(df['row'])], df], ignore_index=True)
