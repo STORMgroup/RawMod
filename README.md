@@ -2,6 +2,11 @@
     <img width="85%" src="./gitfigures/overview.png">
 </p>
 
+<p align="center">
+  <a href="https://huggingface.co/STORMResearch/RawMod"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-yellow" alt="Pretrained models on Hugging Face"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
+</p>
+
 # RawMod Overview
 
 RawMod detects modified DNA bases directly from raw nanopore signals. It is
@@ -15,16 +20,16 @@ gives each position a score between 0 and 1. It does not name the modification.
 
 The figure above shows how RawMod works.
 
-1. **Raw signal pileup (A).** For each queried position, RawMod collects the raw
+1. **Raw signal pileup (1).** For each queried position, RawMod collects the raw
    signal of up to 15 reads that cover it, over 21 bases centred on the
    position. A reference row on top holds the reference sequence and its
    expected signal. The pileup is a 16 × 11 × 210 tensor: 16 rows (reference and
    15 reads), 11 channels (signal, dwell time, base identity and others) and 210
    signal samples (10 per base).
-2. **Model (B, top).** A convolutional encoder embeds each read. A transformer
+2. **Model (2).** A convolutional encoder embeds each read. A transformer
    compares the reads with each other. A final layer gives one score per
    position. The model has 230,697 trainable parameters.
-3. **Training (B, bottom).** RawMod is trained with classification, contrastive
+3. **Training (3).** RawMod is trained with classification, contrastive
    and anomaly-detection losses. A curriculum first trains on the same positions
    in a modified library and its unmodified control. The model therefore first
    learns the modification, not the sequence, organism or library.
