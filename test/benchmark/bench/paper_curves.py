@@ -160,44 +160,69 @@ def main():
         sdf.to_csv(out / f'roc_rows{sfx}.tsv', sep='\t', index=False, float_format='%.4f')
 
     style()
-    nc = 3
-    nr = int(np.ceil(len(sel) / nc))
-    fig, axes = plt.subplots(nr, nc, figsize=(6.27, 2.05 * nr), sharex=True, sharey=True)
+    # every row (--rows all): four columns with one shared legend in the last slot, so the figure fits one page;
+    # the AUROCs are in the matched table. A few rows: three columns, each panel with its own legend and AUROCs.
+    shared = len(sel) > 9
+    nc = 4 if shared else 3
+    nr = int(np.ceil((len(sel) + shared) / nc))
+    fig, axes = plt.subplots(nr, nc, figsize=(6.27, (1.5 if shared else 2.05) * nr), sharex=True, sharey=True)
+    used = []
     for k, (ax, row) in enumerate(zip(axes.flat, sel)):
         ax.plot(GRID[1:], GRID[1:], color='#b0b0b0', lw=0.6, ls='-', zorder=1)
         hs = []
         x = sdf[sdf['row'] == row]
-  # RawMod drawn last (on top); legend in table order
+        # RawMod drawn last (on top); legend in table order
         order = [f for f, _ in TOOLS if f in set(x['tool'])]
+        used += [f for f in order if f not in used]
         for f in order[1:] + order[:1]:
             c = cdf[(cdf['row'] == row) & (cdf['tool'] == f)]
             col, ls, lw = sty(f)
-            ax.plot(c['fpr'].iloc[1:], c['tpr'].iloc[1:], color=col, ls=ls, lw=lw, zorder=3 if f == 'rawmod' else 2)
-        for f in order:
-            col, ls, lw = sty(f)
-            v = x[x['tool'] == f].iloc[0]
-            hs.append(plt.Line2D([], [], color=col, ls=ls, lw=lw,
-                                 label=f"{name(f)}{'$^{c}$' if v['cpg_only'] else ''} {v['auroc']:.3f}"))
-        ax.legend(handles=hs, loc='lower right' if row not in LEG_UL else 'upper left', borderaxespad=0.3,
-                  handlelength=1.2, labelspacing=0.2, borderpad=0.25)
+            ax.plot(c['fpr'].iloc[1:], c['tpr'].iloc[1:], color=col, ls=ls, lw=lw, zorder=3 if f == order[0] else 2)
+        if not shared:
+            for f in order:
+                col, ls, lw = sty(f)
+                v = x[x['tool'] == f].iloc[0]
+                hs.append(plt.Line2D([], [], color=col, ls=ls, lw=lw,
+                                     label=f"{name(f)}{'$^{c}$' if v['cpg_only'] else ''} {v['auroc']:.3f}"))
+            ax.legend(handles=hs, loc='lower right' if row not in LEG_UL else 'upper left', borderaxespad=0.3,
+                      handlelength=1.2, labelspacing=0.2, borderpad=0.25)
         mark, data = TITLE.get(row, (rows[row]['chem'], row))
-        ax.set_title(f'{mark}:\n{data}', pad=3, fontsize=plt.rcParams['font.size'] - 1.5)
+        if shared and data.startswith(r'$\it{H.\ pylori}$'):  # too wide for a quarter of the page: organism on line 1
+            mark, data = mark + r' $\it{H.\ pylori}$', data.split('$ ', 1)[1]
+            mark, data = mark.replace(' $', ':  $', 1), data
+            ax.set_title(f'{mark}\n{data}', pad=3, fontsize=plt.rcParams['font.size'] - 1.5)
+        else:
+            ax.set_title(f'{mark}:\n{data}', pad=3, fontsize=plt.rcParams['font.size'] - 1.5)
         ax.set_xscale('log'); ax.set_xlim(1e-3, 1); ax.set_ylim(0, 1.02)
         ax.set_xticks([1e-3, 1e-2, 1e-1, 1]); ax.set_xticklabels(['$10^{-3}$', '$10^{-2}$', '$10^{-1}$', '1'])
         ax.minorticks_off(); ax.set_yticks([0, 0.5, 1]); ax.grid(True, axis='both')
         ax.text(-0.02, 1.13, '(' + 'abcdefghijklmnop'[k] + ')', transform=ax.transAxes, fontsize=9, fontweight='bold',
                 ha='right', va='bottom')
         if k % nc == 0:
-            ax.set_ylabel('True positive rate')
+            ax.set_ylabel('True positive rate' if not shared else 'TPR')
         if k // nc == nr - 1:
-            ax.set_xlabel('False positive rate (log)')
+            ax.set_xlabel('False positive rate (log)' if not shared else 'FPR (log)')
     for ax in list(axes.flat)[len(sel):]:
         ax.axis('off')
     for k in range(max(0, len(sel) - nc), len(sel)):  # bottom panel of each column carries the x axis labels
         if k // nc < nr - 1:
             ax = axes.flat[k]
-            ax.xaxis.set_tick_params(labelbottom=True); ax.set_xlabel('False positive rate (log)')
-    fig.tight_layout(w_pad=0.6, h_pad=0.9)
+            ax.xaxis.set_tick_params(labelbottom=True); ax.set_xlabel('False positive rate (log)' if not shared else 'FPR (log)')
+    if shared:
+        ax = axes.flat[len(sel)]
+        used = [f for f, _ in TOOLS if f in used]  # table order
+        hs = [plt.Line2D([], [], color=sty(f)[0], ls=sty(f)[1], lw=max(sty(f)[2], 1.4), label=name(f)) for f in used]
+        hs.append(plt.Line2D([], [], color='#b0b0b0', lw=0.8, label='Chance'))
+        ax.legend(handles=hs, loc='upper center', bbox_to_anchor=(0.5, 0.72), frameon=False, handlelength=2.0,
+                  labelspacing=0.12, borderaxespad=0, fontsize=plt.rcParams['font.size'] - 1.5)
+        fig.subplots_adjust(left=0.08, right=0.99, top=0.95, bottom=0.07, wspace=0.14, hspace=0.62)
+        fig.canvas.draw()
+        for a_ in axes.flat:  # end labels lean inward so neighbouring panels' "1" and "10^-3" do not touch
+            tl = a_.xaxis.get_majorticklabels()
+            if len(tl) == 4:
+                tl[0].set_ha('left'); tl[-1].set_ha('right')
+    if not shared:
+        fig.tight_layout(w_pad=0.6, h_pad=0.9)
     dirs = [out] + ([FIGDIR] if str(FIGDIR) not in ('', '.') and FIGDIR.is_dir() else [])
     for d in dirs:
         fig.savefig(d / f'{a.name}.pdf', bbox_inches='tight', pad_inches=0.02)

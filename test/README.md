@@ -185,6 +185,10 @@ bash test/evaluation/3_leaveout.sh
 
 # 4. the two UniMeth-Agn variants (context tokens against one [MOD] token) next to RawMod (supplementary S9.4)
 #    cd test/benchmark && BENCH_HOLDOUT=region python -m bench.agn_variants
+
+# 5. Table 1 with confidence intervals (Supplementary Table S27) and the paired RawMod against UniMeth-Agn bootstrap
+#    cd test/benchmark && BENCH_HOLDOUT=region python -m bench.ci && BENCH_HOLDOUT=region python -m bench.ci_table
+#    cd test/benchmark && BENCH_HOLDOUT=region python -m bench.paired_diff
 ```
 
 | Step | What it does | Resource |
@@ -210,13 +214,19 @@ Each holds:
 | File | In the paper |
 |---|---|
 | `tables/benchmark_models.tex` | Table 1: every model on every row |
-| `fig_benchmark_main.pdf` | Figure 3: (a) mean AUROC and rows with AUROC >= 0.9 per model, (b) one threshold across all rows |
+| `fig_benchmark_main.pdf` | Figure 3: (a) pooled ROC curves under one threshold across all rows, each modification type weighted equally, (b) parameters against mean AUROC over the five types, (c) library invariance |
 | `tables/benchmark_agnostic.tex` | Supplementary table: modification-agnostic AUROC and pooled AUROC |
 | `tables/benchmark.tex` | Supplementary table: matched evaluation (each tool with the models it ships for the row's modification) |
+| `tables/benchmark_models_full_a.tex`, `_b.tex` | Supplementary table: every model of every tool, in two panels |
 | `fig_benchmark_roc_all.pdf` | Supplementary figure: ROC curves of every row |
 | `tables/benchmark_leaveout.tex`, `leaveout.tsv` | Supplementary table: RawMod in distribution vs. leave-out (written by `3_leaveout.sh`) |
+| `tables/supp_bench_ci_a.tex`, `_b.tex`, `ci_rows.tsv` | Supplementary Table S27: Table 1 with 95% confidence intervals, in two panels (written by `bench.ci` and `bench.ci_table`; the rows behind the paper's table are also shipped in `paper/data/work/benchmark_ci/`) |
 | `paper_models.tsv`, `paper_tables.tsv` | every number of the tables |
 | `summary.md` | the main tables in plain text |
+
+The supplementary tables are laid out to fit the text width upright: `bench/upright.py` abbreviates the tool names in
+the header (key in the Table 1 caption), stacks two-value cells, and splits the table with one column per model into
+two panels. `paper_table.py` and `library_control.py` apply it to what they write.
 
 The sequence-only null of every row (AUROC of a logistic regression on the reference 11-mer) is in
 `$BENCH_WORK/nulls_<tag>.tsv`. Per-sample intermediates live in `$BENCH_WORK/<sample>/`.
@@ -252,7 +262,8 @@ held-out positions.
   per-site maximum when there are several; CpG-only models are scored on the CpG sites of mixed-context rows.
 * **Modification-agnostic**: one score per site per tool (the maximum over its models), with no knowledge of the row's
   modification, and a **pooled AUROC with one threshold across all rows** (each row subsampled to at most 1,000
-  positives and 1,000 negatives, seed 0).
+  positives and 1,000 negatives, seed 0; each modification type weighted equally, so the 5mC rows, 8 of 15, do not
+  dominate).
 * **Held-out positions**: a position counts as trained if any training image of the same organism lies on it, on either
   strand and under either label; trained positions are removed from every row (on two-sample rows from both libraries,
   so both classes stay at identical coordinates).

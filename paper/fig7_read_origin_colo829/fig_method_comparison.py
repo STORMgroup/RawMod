@@ -34,8 +34,8 @@ FCNULL = Path(f'{RAWMOD_WORK}/read_origin/auroc_fcnull.tsv')
 FREE, SUP = '#4b71bb', '#aa4499'  # paper palette blue/purple (was Okabe-Ito '#0072B2', '#009E73')
 XFER = SUP
 METHODS = [('RawMod', 'RawMod', FREE),
-           ('dorado', 'Dorado', FREE),
-           ('dorado+RawMod', 'Dorado+RawMod', FREE),
+           ('dorado', 'Dor.', FREE),
+           ('dorado+RawMod', 'Dor.+RawMod', FREE),
            ('MethylBERT', 'MethylBERT', SUP),
   # ROCIT appears ONLY as its own pipeline trains it: on HG008, from
   # somatic variants, then applied here with no labels from us. The
@@ -48,11 +48,11 @@ METHODS = [('RawMod', 'RawMod', FREE),
 # Third title line is the dorado modification model (dorado omitted for width), because it is not the same
 # one everywhere: the human lines use the CpG-only caller, while SPO1 is given
 # dorado's all-context cytosine and adenine models, i.e. the best it ships.
-PANELS = [('SPO1', 'SPO1   5hmU\nnative vs. PCR',
+PANELS = [('SPO1', 'SPO1  5hmU\nnative vs. PCR',
            r'5mC$\_$5hmC@v3'),
-          ('COLO829', 'COLO829   5mC/CpG\ncell typing',
+          ('COLO829', 'COLO829  5mC/CpG\ncell typing',
            r'5mCG$\_$5hmCG@v3'),
-          ('HS578', 'HS578   5mC/CpG\ntumor/normal typing',
+          ('HS578', 'HS578  5mC/CpG\ntumor/normal typing',
            r'5mCG$\_$5hmCG@v3'),
           ('HS578_fc', 'HS578\nflow cell typing',
            r'5mCG$\_$5hmCG@v3')]
@@ -95,9 +95,10 @@ def method_panel(ax, tab, title, model):
     ax.set_ylim(0.42, 1.03)
     ax.set_yticks(np.arange(0.5, 1.01, 0.1))
     ax.grid(True, axis='y')
-    ax.set_title(title, fontsize=FS - 1, pad=13, linespacing=1.0)
-    ax.text(0.5, 1.012, model, transform=ax.transAxes, ha='center', va='bottom',
-            fontsize=FS - 1.5, color='#555555')
+    ax.set_title(title, fontsize=FS - 1, pad=13 if model else 4, linespacing=1.0)
+    if model:  # the Dorado model line is optional; the paper's figure leaves it to the text
+        ax.text(0.5, 1.012, model, transform=ax.transAxes, ha='center', va='bottom',
+                fontsize=FS - 1.5, color='#555555')
 
 
 def main():

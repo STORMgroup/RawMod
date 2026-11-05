@@ -19,7 +19,7 @@ RES = Path(f'{RAWMOD_RESULTS}')
 CHEMS = P.CHEMS
 SEEDS = {42: '', 43: '_s43', 44: '_s44'}
 # support-half positive sites per fold on the holdout tree (from the [fewshot] log lines); K above this is capped
-SUPPORT_POS = {'loco_5hmU': 10173, 'loco_5mC': 10 ** 9, 'loco_5hmC': 10 ** 9, 'loco_4mC': 10 ** 9, 'loco_6mA': 10 ** 9}
+SUPPORT_POS = {'loco_5hmU': 10173, 'loco_5mC': 10 ** 9, 'loco_5hmC': 10 ** 9, 'loco_4mC': 10 ** 9, 'loco_6mA': 17366}
 
 
 def region_metrics(fold, seed=42):
@@ -124,55 +124,72 @@ def collect(mode, fold):
     return {x: list(perK[max(perK)].values()) for x, perK in by.items()}
 
 
-def fig_fewshot():
-    rows = []
-    ft = collect('finetune', 'loco_5hmU'); pool = collect('pool', 'loco_5hmU')
-    ft.setdefault(0, [float(region_metrics('loco_5hmU').auroc)]); pool.setdefault(0, ft[0])
-    rp = RES / 'region_loco_mixedref' / 'region_score' / 'metrics' / 'loco_5hmU.tsv'
+def panel_a(chem):
+    """Fine-tuned and retrained curves of one withheld modification, and the supervised reference on its sites."""
+    fold = f'loco_{chem}'
+    ft = collect('finetune', fold); pool = collect('pool', fold)
+    ft.setdefault(0, [float(region_metrics(fold).auroc)]); pool.setdefault(0, ft[0])
+    rp = RES / 'region_loco_mixedref' / 'region_score' / 'metrics' / f'{fold}.tsv'
     ref = float(pd.read_csv(rp, sep='\t').auroc.iloc[0]) if rp.exists() else np.nan
+    rows = []
     for name, dd in (('A_finetune', ft), ('A_pool', pool)):
         for x, a in sorted(dd.items()):
-            rows.append(dict(panel='A', series=name, pos_sites=x, n=len(a), auroc_mean=np.mean(a), auroc_min=np.min(a), auroc_max=np.max(a)))
+            rows.append(dict(panel='A' if chem == '5hmU' else f'A_{chem}', series=name, pos_sites=x, n=len(a),
+                             auroc_mean=np.mean(a), auroc_min=np.min(a), auroc_max=np.max(a)))
+    return rows, ref
+
+
+def fig_fewshot():
+    rows, ref = panel_a('5hmU')
+    rows6, ref6 = panel_a('6mA')
+    rows += rows6
     for c in CHEMS:
         dd = collect('finetune', f'loco_{c}')
-        if c != '5hmU' and dd:
+        if dd:
             dd.setdefault(0, [float(region_metrics(f'loco_{c}').auroc)])
         for x, a in sorted(dd.items()):
             rows.append(dict(panel='B', series=c, pos_sites=x, n=len(a), auroc_mean=np.mean(a), auroc_min=np.min(a), auroc_max=np.max(a)))
     d = pd.DataFrame(rows)
     d.to_csv(P.FIGDATA / 'fewshot_region_data.tsv', sep='\t', index=False, float_format='%.4f')
-    print(d.to_string(index=False)); print('supervised reference (mixed on the region 5hmU sites)', ref)
+    print(d.to_string(index=False)); print('supervised reference (mixed on the region sites): 5hmU', ref, '6mA', ref6)
     X0 = 3.0
     xs = lambda s: np.where(s == 0, X0, s)
 
-    def fmt(ax):
+    def fmt(ax, lo=0.4):
         ax.set_xscale('log'); ax.minorticks_off()
         ax.set_xticks([X0, 10, 100, 1000, 10000]); ax.set_xticklabels(['0', '10', '100', '1k', '10k'])
-        ax.set_xlim(X0 / 1.5, 25000); ax.set_ylim(0.4, 1.02)
+        ax.set_xlim(X0 / 1.5, 25000); ax.set_ylim(lo, 1.02)
         ax.axhline(0.5, color='k', lw=0.8, ls=':'); ax.grid(True, axis='both')
 
-    fig, ax = plt.subplots(figsize=(P.COL, 2.6))
-    for ser, lab, col, mk in (('A_pool', 'Added to training pool', P.BLUE, 's'), ('A_finetune', 'Fine-tuned from LOCO model', P.PURPLE, 'o')):
-        s = d[(d.panel == 'A') & (d.series == ser)].sort_values('pos_sites')
-        if len(s):
-            x = xs(s.pos_sites.values)
-            ax.fill_between(x, s.auroc_min, s.auroc_max, color=col, alpha=0.25, lw=0)
-            ax.plot(x, s.auroc_mean, '-' + mk, ms=3, lw=1.3, color=col, mec='black', mew=0.3, label=lab)
-    if np.isfinite(ref):
-        ax.axhline(ref, color='k', lw=0.8, ls='--')
-        ax.text(20000, ref - 0.008, f'Supervised ({ref:.3f})', ha='right', va='top', fontsize=P.FS - 1.5)
-    fmt(ax); ax.set_xlabel('Labelled 5hmU sites'); ax.set_ylabel('5hmU AUROC')
-    ax.legend(loc='upper left', borderaxespad=0.3, handlelength=1.2, labelspacing=0.15)
-    fig.tight_layout(); save(fig, 'fig_fewshot_region.pdf')
+    for chem, panel, r, out in (('5hmU', 'A', ref, 'fig_fewshot_region.pdf'), ('6mA', 'A_6mA', ref6, 'fig_supp_fewshot_6mA_region.pdf')):
+        fig, ax = plt.subplots(figsize=(P.COL, 2.6))
+        for ser, lab, col, mk in (('A_pool', 'Added to training pool', P.BLUE, 's'), ('A_finetune', 'Fine-tuned from LOCO model', P.PURPLE, 'o')):
+            s = d[(d.panel == panel) & (d.series == ser)].sort_values('pos_sites')
+            if len(s):
+                x = xs(s.pos_sites.values)
+                ax.fill_between(x, s.auroc_min, s.auroc_max, color=col, alpha=0.25, lw=0)
+                ax.plot(x, s.auroc_mean, '-' + mk, ms=3, lw=1.3, color=col, mec='black', mew=0.3, label=lab)
+        if np.isfinite(r):
+            ax.axhline(r, color='k', lw=0.8, ls='--')
+            if r > 0.95:  # near the top: the curves end at the label, so it goes to the empty left side
+                ax.text(X0 / 1.3, r - 0.008, f'Supervised ({r:.3f})', ha='left', va='top', fontsize=P.FS - 1.5)
+            else:
+                ax.text(20000, r - 0.008, f'Supervised ({r:.3f})', ha='right', va='top', fontsize=P.FS - 1.5)
+        fmt(ax, 0.3 if (d[d.panel == panel].auroc_min < 0.4).any() else 0.4); ax.set_xlabel(f'Labeled {chem} sites'); ax.set_ylabel(f'{chem} AUROC')
+        ax.legend(loc='upper left' if not r > 0.95 else 'lower right', borderaxespad=0.3, handlelength=1.2, labelspacing=0.15)
+        fig.tight_layout(); save(fig, out)
 
     if (d.panel == 'B').any():
         fig, ax = plt.subplots(figsize=(P.COL, 2.6))
         for c in CHEMS:
             s = d[(d.panel == 'B') & (d.series == c)].sort_values('pos_sites')
             if len(s):
+                s = s[s.pos_sites <= 1000]                       # supplementary panel: 0 to 1k sites only
                 ax.plot(xs(s.pos_sites.values), s.auroc_mean, '-o', ms=2.8, lw=1.2, color=P.CHEM_COL[c], mec='black', mew=0.3, label=c)
-        fmt(ax); ax.set_xlabel('Labelled sites of held-out modification'); ax.set_ylabel('AUROC')
-        ax.legend(ncol=1, loc='lower right', borderaxespad=0.3, handlelength=1.2, labelspacing=0.15)
+        fmt(ax, 0.3 if (d[(d.panel == 'B') & (d.pos_sites <= 1000)].auroc_mean < 0.4).any() else 0.4); ax.set_xticks([X0, 10, 100, 1000]); ax.set_xticklabels(['0', '10', '100', '1k']); ax.set_xlim(X0 / 1.5, 1500)
+        ax.set_xlabel('Labeled sites of held-out modification'); ax.set_ylabel('AUROC')
+        ax.legend(ncol=5, loc='lower center', bbox_to_anchor=(0.5, 1.0), frameon=False, borderaxespad=0.2,
+                  handlelength=1.2, columnspacing=0.8, handletextpad=0.3)
         fig.tight_layout(); save(fig, 'fig_supp_fewshot_region.pdf')
 
 

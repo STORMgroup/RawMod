@@ -47,10 +47,10 @@ def cat_panel(ax, lab, spec, title, letter, ncol):
     legend(ax, [s for s in spec if (lab == s[0]).any()], ncol)
 
 
-fig = plt.figure(figsize=(P.TW, 6.3))
-gs = GridSpec(2, 1, height_ratios=[1.12, 1.0], hspace=0.28, figure=fig)
+fig = plt.figure(figsize=(P.TW, 6.7))
+gs = GridSpec(2, 1, height_ratios=[1.12, 1.0], hspace=0.42, figure=fig)
 top = gs[0].subgridspec(1, 3, wspace=0.08)
-bot = gs[1].subgridspec(2, 5, wspace=0.05, hspace=0.32)
+bot = gs[1].subgridspec(2, 5, wspace=0.05, hspace=0.42)
 
 cat_panel(fig.add_subplot(top[0]), MODS, MOD, 'Modification', 'a', 3)
 cat_panel(fig.add_subplot(top[1]), RB, BASE, 'Reference base', 'b', 4)
@@ -72,7 +72,7 @@ for i, org in enumerate(ORG):
     mods = [k for k, _, _ in MOD if k != 'unmodified' and (MODS[o] == k).any()]
     ax.set_title(f"{ORG_TEX[org]}\n{', '.join(mods)}", fontsize=P.FS - 1, pad=2, linespacing=1.1)
     if i == 0:
-        P.plabel(ax, 'd', x=-0.12, y=1.2)
+        P.plabel(ax, 'd', x=-0.12, y=1.32)
 ax = fig.add_subplot(bot[1, 4]); ax.axis('off')
 h = [Line2D([], [], ls='', marker='o', ms=4.2, mfc=c, mec='black', mew=0.3, label=n)
      for n, c in (('Modified', MOD_C), ('Unmodified', UNMOD_C), ('Other organisms', '#e3e3e3'))]

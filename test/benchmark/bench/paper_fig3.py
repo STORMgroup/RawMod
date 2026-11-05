@@ -3,8 +3,10 @@
 
   (a) one threshold across all rows. Each tool that covers more than one modification gives one score per site with no
       knowledge of the modification (the maximum over all of its models; RawMod its single score), and the sites of
-      every row are pooled (at most 1,000 positives and 1,000 negatives per row, seed 0: exactly the pooled AUROC of
-      tables/benchmark_agnostic.tex). The ROC curve asks whether one cut-off works for every modification at once.
+      every row are pooled (at most 1,000 positives and 1,000 negatives per row, seed 0: the sites of the pooled AUROC of
+      tables/benchmark_agnostic.tex). Each modification type carries equal weight, split equally between its modified
+      and unmodified sites, so the 5mC rows (8 of 15) do not dominate. The ROC curve asks whether one cut-off works for
+      every modification at once.
   (b) size against accuracy on the modified datasets: each tool at the parameters of every model it needs to cover its
       modifications (bench.paper_table.PARAMS: learned weights of the modification model only, no basecaller, no k-mer
       table; MethyNano's species models count once, a run uses one), against the mean over the five modifications of
@@ -86,26 +88,33 @@ def main():
     box = {'a': (0.44, 1.50), 'b': (2.46, 1.35), 'c': (4.72, 1.47)}
     bx, cx, lx = (fig.add_axes([l / W, y0 / H, w / W, (y1 - y0) / H]) for l, w in box.values())
 
-  # (a) one threshold across all datasets: tools that cover more than one modification
+  # (a) one threshold across all datasets: tools that cover more than one modification, each modification type weighted equally
+    mark_of = {row: g.split(',')[0] for g, members in GROUPS for row, _ in members}
     y = pooled['label'].to_numpy()
+    mod = pooled['row'].map(mark_of).to_numpy()
+    w = np.zeros(len(y))
+    for m in np.unique(mod):
+        for k in (0, 1):
+            sel = (mod == m) & (y == k)
+            w[sel] = 1.0 / max(int(sel.sum()), 1)
     for f in [t for t, _ in TOOLS if t.startswith('rawmod') or t in ROC_TOOLS]:
         if f not in pooled:
             continue
         s = pooled[f].to_numpy()
-        fpr, tpr, _ = roc_curve(y, s)
+        fpr, tpr, _ = roc_curve(y, s, sample_weight=w)
         col, _, lw = sty(f)
         hot = f.startswith('rawmod')
         k = 1 if hot else len(fam[f])
         bx.plot(fpr, tpr, color=STY['rawmod'][0] if hot else col, ls='--' if f == AGN else '-', lw=1.9 if hot else 1.2,
                 zorder=4 if hot else 3,
-                label=f"{'RawMod' if hot else name(f)} ({k}): {roc_auc_score(y, s):.3f}")
+                label=f"{'RawMod' if hot else name(f)} ({k}): {roc_auc_score(y, s, sample_weight=w):.3f}")
     bx.plot([0, 1], [0, 1], color='#9a9a9a', lw=0.6, ls=':')
     bx.set_xlim(0, 1); bx.set_ylim(0, 1.0)
+    bx.set_yticks([0.2, 0.4, 0.6, 0.8, 1.0])  # no 0.0 on y: it would collide with the 0.0 of the x axis
     bx.set_xlabel('False-positive rate'); bx.set_ylabel('True-positive rate', labelpad=1)
     bx.legend(loc='lower right', frameon=True, framealpha=0.95, edgecolor='#cccccc', fontsize=8, handlelength=1.4, borderpad=0.3, labelspacing=0.25)
     
   # (b) one point per tool (comparative methods excluded); x = parameters of all models the tool runs
-    mark_of = {row: g.split(',')[0] for g, members in GROUPS for row, _ in members}
     t1 = pd.read_csv(d / 'paper_tables.tsv', sep='\t')
     t1['auroc'] = pd.to_numeric(t1['agnostic'], errors='coerce')  # the tool as a whole, as in benchmark_agnostic.tex
     acc = t1.assign(mark=t1['row'].map(mark_of)).groupby(['tool', 'mark'])['auroc'].mean().groupby('tool').mean()

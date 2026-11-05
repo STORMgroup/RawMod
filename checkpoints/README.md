@@ -7,13 +7,14 @@ model is trained with the recipe in the top-level README
 ([Training](../README.md#training)). Load any of them with
 `--checkpoint <path>` in the scoring scripts; all of them require `--normalize`
 (MAD-normalized signal) and base identity visible in the pileup (`PILEUP_MASK_BASES=0`,
-the default).
+the default). The same files are published on Hugging Face at
+https://huggingface.co/STORMResearch/RawMod.
 
 | Path | Trained on | Use |
 |---|---|---|
 | `rawmod.pt` | All data | Scoring new data. This is the model behind the genome map and the read-origin analyses of the paper. |
-| `region_holdout/mixed.pt` | All data except one contiguous ~15% region of every genome, together with every read that overlaps it | The RawMod column of the benchmark (Table 1) and the first row of Table 2. Scored only inside the withheld regions. |
-| `region_holdout/loco_{5mC,5hmC,6mA,4mC,5hmU}.pt` | As `mixed.pt`, and without every organism that carries the named modification | Zero-shot rows of Table 2: detection of a modification never seen in training. |
+| `region_holdout/mixed.pt` | All data except one contiguous ~15% region of every genome, together with every read that overlaps it | The RawMod column of the benchmark (Table 1) and the first row of Supplementary Table S1. Scored only inside the withheld regions. |
+| `region_holdout/loco_{5mC,5hmC,6mA,4mC,5hmU}.pt` | As `mixed.pt`, and without every organism that carries the named modification | Zero-shot rows of Supplementary Table S1: detection of a modification never seen in training. |
 | `leaveout/<name>.pt` | As `mixed.pt`, and without every sample of one organism or library | Supplementary leave-out table of the benchmark (`test/evaluation/3_leaveout.sh`). |
 
 `region_holdout/holdout_regions.tsv` lists the withheld region of every genome
@@ -47,7 +48,7 @@ the shipped training seed. The paper reports the mean over three seeds.
 For 4mC (`hp26695.pt`), 5hmC (`ont5hmC.pt`) and 5hmU (`spo1.pt`) the withheld
 library is the only training source of that modification, so these scores are
 zero-shot detection of an unseen modification on a different test set than
-Table 2. The model names used by the benchmark configuration
+Supplementary Table S1. The model names used by the benchmark configuration
 (`test/benchmark/config/rawmod_models.tsv`) are `rawmod` (= `region_holdout/mixed.pt`),
 `released` (= `rawmod.pt`) and `logo_<name>` for the
 leave-out models.

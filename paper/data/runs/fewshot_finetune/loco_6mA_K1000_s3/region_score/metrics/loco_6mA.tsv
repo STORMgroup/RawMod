@@ -1,0 +1,3 @@
+fold	test_set	held_out	micro_f1	mod_f1	unmod_f1	macro_f1	mod_prec	mod_rec	auprc	auroc	auroc_sad	threshold	n_pos	n_test
+loco_6mA	region_6mA_subsampled	6mA	0.761541	0.543810	0.838583	0.691196	0.450855	0.685049	0.547369	0.814664		0.950633	6274	30240
+loco_6mA	region_6mA_all_neg	6mA	0.762696	0.544154	0.839596	0.691875	0.451328	0.685049	0.548253	0.815653		0.950633	6274	30345

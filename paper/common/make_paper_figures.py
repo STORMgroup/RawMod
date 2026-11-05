@@ -107,31 +107,34 @@ def barlabels(ax, bars, vals, y, fmt='{:.2f}×', fs=FS - 1.5):
 
 def fig_overview():
     sc = np.load(FIGDATA / 'signal_contrast.npz', allow_pickle=True)  # from signal_contrast.py
-    fig = plt.figure(figsize=(TW, 2.45))  # architecture is Fig. 2 (Architecture2.svg)
+    FH, NSHOW = 1.95, 8   # height (in); reads shown per pileup (of 15) so each row stays legible
+    fig = plt.figure(figsize=(TW, FH))  # architecture is Fig. 2 (Architecture2.svg)
+    TOP, BOT = 1 - 0.15 / FH, 0.42 / FH   # margins in inches: panel letters above, x labels below
     L, HALF = 10, 4
     cols = slice((10 - HALF) * L, (11 + HALF) * L)  # +-4 bases around candidate
     t = (np.arange((2 * HALF + 1) * L) + 0.5) / L - HALF - 0.5
 
   # ---- (a) one 5mC site: pileups of the modified and the unmodified library + read medians
     xm, xu = sc['5mC_ex_mod'], sc['5mC_ex_unmod']
-    gs = fig.add_gridspec(3, 1, left=0.06, right=0.44, top=0.93, bottom=0.17, hspace=0.12,
-                          height_ratios=[1, 1, 1.25])
+    gs = fig.add_gridspec(3, 1, left=0.06, right=0.44, top=TOP, bottom=BOT, hspace=0.12,
+                          height_ratios=[1, 1, 1.35])
     heat = []
     for i, (x, nm) in enumerate(((xm, 'Modified (5mC)'), (xu, 'Unmodified'))):
         ax = fig.add_subplot(gs[i]); ax.grid(False)
         valid = np.abs(x[1:]).sum(1) > 1e-6
-        dlt = (x[1:][valid] - x[0])[:, cols]
+        dlt = (x[1:][valid] - x[0])[:NSHOW, cols]
         im = ax.imshow(dlt, aspect='auto', cmap='RdBu_r', vmin=-2, vmax=2, interpolation='nearest',
-                       extent=(-HALF - 0.5, HALF + 0.5, valid.sum() + 0.5, 0.5))
+                       extent=(-HALF - 0.5, HALF + 0.5, len(dlt) + 0.5, 0.5))
         ax.axvline(-0.5, color='k', lw=0.8); ax.axvline(0.5, color='k', lw=0.8)
-        ax.set_xticks([]); ax.set_yticks([1, valid.sum()])
+        ax.set_xticks([]); ax.set_yticks([])
         ax.tick_params(right=False, top=False, bottom=False)
-        ax.set_ylabel('Read', labelpad=0)
-        ax.text(0.02, 0.96, nm, transform=ax.transAxes, ha='left', va='top', fontsize=FS - 1,
-                bbox=dict(fc='white', ec='black', lw=0.5, pad=1.2))
+        ax.set_ylabel('Reads', labelpad=0)
+        ax.text(0.02, 0.93, nm, transform=ax.transAxes, ha='left', va='top', fontsize=FS - 1.5,
+                bbox=dict(fc='white', ec='black', lw=0.5, pad=1.0))
         heat.append(ax)
     plabel(heat[0], 'a', x=-0.14, y=0.98)
-    cax = fig.add_axes([0.448, 0.575, 0.007, 0.355])
+    p0, p1 = heat[0].get_position(), heat[1].get_position()   # one colour bar centred on both pileups
+    cax = fig.add_axes([0.448, p1.y0, 0.007, p0.y1 - p1.y0])
     cb = fig.colorbar(im, cax=cax); cb.outline.set_linewidth(0.6)
     cb.set_ticks([-2, 0, 2]); cb.ax.tick_params(length=2, width=0.6, pad=1, direction='in')
     cb.set_label('Δ current', labelpad=0, fontsize=FS - 1)
@@ -147,13 +150,13 @@ def fig_overview():
     ax.set_xlim(-HALF - 0.5, HALF + 0.5); ax.set_xticks(range(-4, 5, 2))
     ax.set_xlabel('Base offset from 5mC')
     ax.set_ylabel('Δ current', labelpad=1)
-    ax.set_ylim(-1.45, 1.75)
+    ax.set_ylim(-1.45, 1.95)
     ax.legend(loc='upper center', ncol=2, borderaxespad=0.2, handlelength=0.9, columnspacing=0.6,
               fontsize=FS - 1.5, borderpad=0.2)
 
   # ---- (b) all matched sites: excess signal difference per base offset, per modification
-    ax = fig.add_axes([0.575, 0.17, 0.415, 0.76])
-    plabel(ax, 'b', x=-0.14, y=0.98)
+    ax = fig.add_axes([0.575, BOT, 0.415, TOP - BOT])
+    plabel(ax, 'b', x=-0.175, y=0.98)   # left of the y label, which spans the short axis
     off = np.arange(-10, 11)
     for c in CHEMS:
         r = (sc[f'{c}_diff'] / sc[f'{c}_null']).reshape(21, 10).mean(1)
@@ -161,11 +164,11 @@ def fig_overview():
     ax.axhline(1, color='black', lw=0.8, ls='--')
     ax.axvline(0, color='black', lw=0.6, ls=':')
     ax.set_xlim(-10.5, 10.5); ax.set_xticks([-10, -5, 0, 5, 10])
-    ax.set_ylim(0.6, 3.6)
+    ax.set_ylim(0.8, 3.45); ax.set_yticks([1, 1.5, 2, 2.5, 3])
     ax.set_xlabel('Base offset from modified base')
-    ax.set_ylabel('Signal difference (× noise)', labelpad=2)
-    ax.legend(loc='upper left', ncol=3, borderaxespad=0.3, columnspacing=0.7, handlelength=1.0,
-              labelspacing=0.2, fontsize=FS - 1.5)
+    ax.set_ylabel('Difference (× noise)', labelpad=2)
+    ax.legend(loc='upper right', ncol=2, borderaxespad=0.3, columnspacing=0.7, handlelength=1.0,
+              labelspacing=0.2, fontsize=FS - 1.5)   # upper right is empty: the peaks sit at offsets -1 to +2
 
     save(fig, 'fig_overview.pdf')
 

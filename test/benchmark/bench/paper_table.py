@@ -18,7 +18,8 @@
                                  of its models (RawMod: its single score). Every row is scored for every tool on all
                                  of the row's sites. Summary rows: mean per-row AUROC, the same over rows whose
                                  sequence-only null is < 0.75, and a pooled AUROC with ONE threshold across all rows
-                                 (each row subsampled to <= 1,000 positives and <= 1,000 negatives, seed 0).
+                                 (each row subsampled to <= 1,000 positives and <= 1,000 negatives, seed 0; each
+                                 modification type weighted equally).
 
 Rows whose reference-11-mer null (bench.nulls) is >= 0.9 are marked $^{\\ddagger}$: sequence alone separates them.
 '--' = output not in yet. Cells are coloured by AUROC (red = N/A or <= 0.5, green = 1.0); the best number per row is\nbold. Matched table ends with each tool's average AUROC over the rows it scores, and how many rows that is.
@@ -36,6 +37,7 @@ from sklearn.metrics import roc_auc_score
 
 from . import common as C
 from . import score as Sc
+from . import upright
 
 # RawMod columns: BENCH_RAWMOD=name[,name,...] picks entries of config/rawmod_models.tsv (bench.models); default the
 # paper's model 'rawmod'. Each is its own column (subtool 'rawmod' or 'rawmod_<name>'), never a max over checkpoints.
@@ -340,6 +342,16 @@ def main():
     cells = []
     pooled = {'row': np.concatenate([[p[0]] * len(p[1]) for p in pool]) if pool else [],
               'label': np.concatenate([p[1] for p in pool]) if pool else []}
+  # each modification type carries equal weight (split equally between its modified and unmodified sites), so the
+  # 5mC rows (8 of 15) do not dominate; bench.paper_fig3 weights its ROC curves the same way
+    if pool:
+        y_pool = np.concatenate([p[1] for p in pool])
+        m_pool = np.concatenate([[mark_of[p[0]]] * len(p[1]) for p in pool])
+        w_pool = np.zeros(len(y_pool))
+        for m in np.unique(m_pool):
+            for k in (0, 1):
+                sel = (m_pool == m) & (y_pool == k)
+                w_pool[sel] = 1.0 / max(int(sel.sum()), 1)
     for f, _ in TOOLS:
         x = df[df['tool'] == f]
         if f in NEEDS_CONTROL:
@@ -347,9 +359,9 @@ def main():
         if x['_pool'].isna().any() if '_pool' in x else True:
             cells.append('--'); continue
         yy = np.concatenate([p[1] for p in pool]); ss = np.concatenate(x['_pool'].tolist())
-        cells.append(roc_auc_score(yy, ss))
+        cells.append(roc_auc_score(yy, ss, sample_weight=w_pool))
         pooled[f] = ss
-    summ.append(('Pooled AUROC, one threshold', cells))
+    summ.append(('Pooled AUROC, one threshold, types weighted equally', cells))
   # the pooled sites behind that row (bench.paper_fig3 draws their ROC curves)
     pd.DataFrame(pooled).to_csv(out / 'pooled_sites.tsv.gz', sep='\t', index=False, float_format='%.8g')
     sfoot = [r'\midrule']
@@ -420,6 +432,9 @@ def main():
         (out / 'tables' / fname).write_text('\n'.join(mhead + L + mfoot + [r'\bottomrule', r'\end{tabular}']) + '\n')
     write_models(MODELS, 'benchmark_models_full.tex')
     write_models([c for c in MODELS if c[0] not in MAIN_DROP], 'benchmark_models.tex', row_mean=False)
+    # upright layout for the supplement: abbreviated headers; the full model table in two panels
+    for name in ('benchmark', 'benchmark_agnostic', 'benchmark_models_full'):
+        upright.fit(out / 'tables' / f'{name}.tex')
     mdf.to_csv(out / 'paper_models.tsv', sep='\t', index=False, float_format='%.4f')
     df.drop(columns=['_pool'], errors='ignore').to_csv(out / 'paper_tables.tsv', sep='\t', index=False, float_format='%.4f')
     for name, cells in summ:

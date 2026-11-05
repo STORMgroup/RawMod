@@ -24,7 +24,7 @@ ROWS = [  # (group header or None, label, run-directory function of fold)
     (None, r'\sysname (final, seed 42)', lambda f: final_dir(f, '')),
     (None, r'\hspace{4pt}seed 43', lambda f: final_dir(f, '_s43')),
     (None, r'\hspace{4pt}seed 44', lambda f: final_dir(f, '_s44')),
-    ('Input features', r'$-$ candidate-base $\Delta$ channel', lambda f: 'ablation_noch9_region_score'),
+    ('Input features', r'$-$ site-deviation channel', lambda f: 'ablation_noch9_region_score'),
     (None, r'\hspace{4pt}seed 43', lambda f: 'ablation_noch9_s43_region_score'),
     (None, r'\hspace{4pt}seed 44', lambda f: 'ablation_noch9_s44_region_score'),
     (None, r'Base identity masked', lambda f: 'ablation_maskbases_region_score'),

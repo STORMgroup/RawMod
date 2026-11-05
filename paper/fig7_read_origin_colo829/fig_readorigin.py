@@ -42,8 +42,12 @@ def main():
     tab = pd.concat(parts, ignore_index=True)
     panels = [p for p in M.PANELS if (tab.dataset == p[0]).any()]
 
-    fig = plt.figure(figsize=(TW, 4.45))
-    gs = fig.add_gridspec(2, 1, height_ratios=[1.0, 1.3], hspace=0.47, left=0.075, right=0.995, top=0.91, bottom=0.14)
+    FH = float(_os.environ.get('FIG4_H', 3.52))   # height (in)
+    fig = plt.figure(figsize=(TW, FH))
+  # letters now sit level with the legends, so the top margin only holds the legends (0.36 in);
+  # the row gap holds the top row's x labels, the bottom row's titles and a clear blank band
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.0, float(_os.environ.get('FIG4_R', 0.95))], hspace=float(_os.environ.get('FIG4_HS', 0.62)),
+                          left=0.075, right=0.995, top=1 - 0.36 / FH, bottom=0.60 / FH)
     # One example panel per cell-line pair; the row shrinks when only one is present.
     ratios = ([1, 1] if hs is not None else [1]) + [1.2, 1.3]
     top = gs[0].subgridspec(1, len(ratios), width_ratios=ratios, wspace=0.42)
@@ -76,7 +80,7 @@ def main():
 
   # ---- bottom row: every method on every dataset (fig_method_comparison) ----
     for ax, (ds, title, model) in zip(bxs, panels):
-        M.method_panel(ax, tab[tab.dataset == ds], title, model)
+        M.method_panel(ax, tab[tab.dataset == ds], title, '')   # no Dorado model line
     bxs[0].set_ylabel('AUROC')
     for ax in bxs[1:]:
         ax.tick_params(labelleft=False)
@@ -84,10 +88,37 @@ def main():
     bxs[0].legend(handles=h, loc='lower right', fontsize=FS - 1.5, handletextpad=0.3, borderpad=0.3,
                   labelspacing=0.25, borderaxespad=0.3)
 
+  # a, b: the pair's name is a centred title and its two arms a frameless row under it, so nothing sits at
+  # the panel's left edge where the letter goes
+    for ax, key in zip(axs[:2], [k for k, _ in sets]):
+        h, l = ax.get_legend_handles_labels(); ax.get_legend().remove()
+        ax.legend(h, l, loc='lower center', ncol=2, bbox_to_anchor=(0.5, 1.0), borderaxespad=0.1, frameon=False,
+                  fontsize=FS - 1.5, handletextpad=0.1, columnspacing=0.6, handlelength=1.0, borderpad=0.1)
+        ax.set_title(J.D_LAB[key], fontsize=FS + 0.5, fontweight='bold', pad=13)
     J.raise_for_ticklabels(fig, (axs[-2], axs[-1]))
-    J.panel_letters(fig, [(ax, c, -0.22) for ax, c in zip(axs, 'abcd')])
-    for ax, s in zip(bxs, 'abcdefgh'[len(axs):]):
-        plabel(ax, s, x=-0.12, y=1.2)
+  # letters level with the legends above their panels (as in Fig. 1), not on a row of their own above them
+    fig.canvas.draw()
+    LT = 'abcdefgh'[:len(axs)]; LB = 'abcdefgh'[len(axs):len(axs) + len(bxs)]
+    ytop = max(max(ax.get_legend().get_window_extent().y1, ax.title.get_window_extent().y1) for ax in axs) / fig.bbox.height
+    wide = {k for k, _ in sets}   # the example panels: their letter sits further left, clear of the legend box
+    nw = len(wide)
+    xt = [max(0.002, ax.get_position().x0 - (0.36 if i < nw else 0.22) * ax.get_position().width) for i, ax in enumerate(axs)]
+    xb = [ax.get_position().x0 - 0.12 * ax.get_position().width for ax in bxs]
+  # one letter column per panel column: the top and bottom panel of a column share an x, the further left of
+  # the two rows' natural positions, so each letter stays clear of its own panel's legend or title (a letter plus
+  # a small gap is 0.13 in). Columns without a bottom panel keep the top position.
+    gapw = 0.13 / fig.get_figwidth()
+    xc = []
+    for i in range(len(axs)):
+        if i == 0 and xb: xc.append(min(xt[0], xb[0]))
+        elif i < len(xb): xc.append(min(xb[i], axs[i].get_position().x0 - gapw))
+        else: xc.append(xt[i])
+    for c, x in zip(LT, xc):
+        fig.text(x, ytop, c, fontsize=FS + 3, fontweight='bold', va='top', ha='left')
+    fig.canvas.draw()
+    for ax, s, x in zip(bxs, LB, xc):
+        yt = ax.title.get_window_extent().y1 / fig.bbox.height   # level with the first title line
+        fig.text(x, yt, s, fontsize=FS + 3, fontweight='bold', va='top', ha='left')
     save(fig, 'fig_readorigin.pdf'); print('wrote fig_readorigin.pdf')
 
 

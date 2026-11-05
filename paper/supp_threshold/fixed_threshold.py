@@ -5,7 +5,8 @@ Each tool scores a site with its modification-agnostic score (the maximum over i
 One threshold per tool is set at 1% false positives on the pooled negatives of the agnostic table (at most 1,000
 positives and 1,000 negatives per row, seed 0). Per row it reports the true-positive rate at that threshold, and the
 true- and false-positive rates at 0.5. The summary rows average over the 15 rows and over the five modification types
-(the rows of each type averaged first), and give the worst type. The pooled AUROC has a 95% CI from a cluster bootstrap
+(the rows of each type averaged first), and give the worst type. The pooled AUROC is given as is and with each
+modification type weighted equally (the type-balanced value of the paper), each with a 95% CI from a cluster bootstrap
 over reference positions (500 resamples).
 
   cd test/benchmark && BENCH_HOLDOUT=region python ../../paper/supp_threshold/fixed_threshold.py compute
@@ -33,6 +34,16 @@ ROWS = [('arabidopsis_cpg_chr4', r'\textit{A.~thaliana} CpG'), ('hg002_cpg', 'HG
         ('hp26695_4mC_reg', r'\textit{H.~pylori} 4mC'), ('spo1_5hmU_reg', r'\phage 5hmU')]
 
 
+def type_weights(y, mod):
+    """Each modification type carries equal weight, split equally between its modified and unmodified sites."""
+    w = np.zeros(len(y))
+    for m in np.unique(mod):
+        for k in (0, 1):
+            sel = (mod == m) & (y == k)
+            w[sel] = 1.0 / max(int(sel.sum()), 1)
+    return w
+
+
 def compute():
     sys.path.insert(0, str(REPO / 'test' / 'benchmark'))
     from sklearn.metrics import roc_auc_score, roc_curve
@@ -56,7 +67,7 @@ def compute():
             data[row] = (y, keys, sc, take, g.split(',')[0])
             print(row, len(y), int(y.sum()), {f: round(roc_auc_score(y, s), 3) for f, s in sc.items()}, flush=True)
 
-    def boot_auroc(y, s, keys):
+    def boot_auroc(y, s, keys, mod=None):
         uk, inv = np.unique(keys, return_inverse=True)
         order = np.argsort(inv, kind='mergesort')
         starts = np.searchsorted(inv[order], np.arange(len(uk)))
@@ -68,20 +79,22 @@ def compute():
             off = np.repeat(np.r_[0, np.cumsum(L)[:-1]], L)
             idx = order[np.repeat(starts[pick], L) + (np.arange(int(L.sum())) - off)]
             if 0 < y[idx].sum() < len(idx):
-                vals.append(roc_auc_score(y[idx], s[idx]))
+                vals.append(roc_auc_score(y[idx], s[idx], sample_weight=None if mod is None else type_weights(y[idx], mod[idx])))
         return np.percentile(vals, [2.5, 97.5])
 
     pooled, thr = [], {}
     for f in tools:
-        ys, ss, ks = [], [], []
-        for y, keys, sc, take, _ in data.values():
+        ys, ss, ks, ms = [], [], [], []
+        for y, keys, sc, take, mod in data.values():
             if f in sc:
-                ys.append(y[take]); ss.append(sc[f][take]); ks.append(keys[take])
-        y, s, k = map(np.concatenate, (ys, ss, ks))
+                ys.append(y[take]); ss.append(sc[f][take]); ks.append(keys[take]); ms.append(np.full(len(take), mod))
+        y, s, k, m = map(np.concatenate, (ys, ss, ks, ms))
         lo, hi = boot_auroc(y, s, k)
+        blo, bhi = boot_auroc(y, s, k, m)
         thr[f] = float(np.quantile(s[y == 0], 0.99))
         pooled.append(dict(tool=f, n_rows=len(ys), n_sites=len(y), auroc=roc_auc_score(y, s), lo=lo, hi=hi,
-                           thr_1pct_fpr=thr[f]))
+                           auroc_balanced=roc_auc_score(y, s, sample_weight=type_weights(y, m)), lo_balanced=blo,
+                           hi_balanced=bhi, thr_1pct_fpr=thr[f]))
 
     def at(y, s, t):
         pred = s >= t

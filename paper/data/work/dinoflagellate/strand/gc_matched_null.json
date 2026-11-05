@@ -8,9 +8,9 @@
   "within_gc_sd": 0.04445149403933916,
   "contig_gc": 0.4306973228369263,
   "regression": {
-   "beta_const": 0.13923661691250994,
-   "beta_gc": 0.6975449049659206,
-   "beta_log10len": 0.05806593876274768,
+   "beta_const": 0.13923661691251027,
+   "beta_gc": 0.6975449049659201,
+   "beta_log10len": 0.05806593876274763,
    "resid_sd": 0.0809510002346095
   },
   "junctions": [
@@ -29,8 +29,8 @@
      "pct": 54.54545454545454,
      "mean": 0.7573106632968017
     },
-    "regression_resid_z": 0.48555185883164137,
-    "regression_pred": 0.7351166531142386,
+    "regression_resid_z": 0.4855518588316427,
+    "regression_pred": 0.7351166531142385,
     "null_tol0.02": {
      "n_eligible_starts": 11113,
      "n_nonoverlapping": 74,
@@ -114,8 +114,8 @@
      "pct": 100.0,
      "mean": 0.7660765426597727
     },
-    "regression_resid_z": 1.900277524065616,
-    "regression_pred": 0.7737795715082315,
+    "regression_resid_z": 1.9002775240656173,
+    "regression_pred": 0.7737795715082314,
     "null_tol0.02": {
      "n_eligible_starts": 515,
      "n_nonoverlapping": 3,
@@ -199,8 +199,8 @@
      "pct": 72.97297297297297,
      "mean": 0.5915380023442827
     },
-    "regression_resid_z": -0.20275978857990604,
-    "regression_pred": 0.6459365809185706,
+    "regression_resid_z": -0.20275978857990465,
+    "regression_pred": 0.6459365809185705,
     "null_tol0.02": {
      "n_eligible_starts": 26305,
      "n_nonoverlapping": 499,
@@ -365,9 +365,9 @@
   "within_gc_sd": 0.04445149403933916,
   "contig_gc": 0.4306973228369263,
   "regression": {
-   "beta_const": 0.06703868121012789,
-   "beta_gc": 1.2195866686553933,
-   "beta_log10len": -0.007643679829301142,
+   "beta_const": 0.06703868121012795,
+   "beta_gc": 1.2195866686553942,
+   "beta_log10len": -0.007643679829300864,
    "resid_sd": 0.12756701105444096
   },
   "junctions": [
@@ -386,8 +386,8 @@
      "pct": 90.9090909090909,
      "mean": 0.610202135517199
     },
-    "regression_resid_z": 1.5214910295231205,
-    "regression_pred": 0.6249289182444946,
+    "regression_resid_z": 1.5214910295231074,
+    "regression_pred": 0.6249289182444963,
     "null_tol0.02": {
      "n_eligible_starts": 11113,
      "n_nonoverlapping": 74,
@@ -471,8 +471,8 @@
      "pct": 62.5,
      "mean": 0.7043083216957247
     },
-    "regression_resid_z": 1.0964646367174133,
-    "regression_pred": 0.6387085234561654,
+    "regression_resid_z": 1.0964646367173987,
+    "regression_pred": 0.6387085234561672,
     "null_tol0.02": {
      "n_eligible_starts": 515,
      "n_nonoverlapping": 3,
@@ -556,8 +556,8 @@
      "pct": 59.45945945945946,
      "mean": 0.5355900846475553
     },
-    "regression_resid_z": 0.4152715870752314,
-    "regression_pred": 0.526062159056062,
+    "regression_resid_z": 0.4152715870752201,
+    "regression_pred": 0.5260621590560635,
     "null_tol0.02": {
      "n_eligible_starts": 26305,
      "n_nonoverlapping": 499,
@@ -641,8 +641,8 @@
      "pct": 90.9090909090909,
      "mean": 0.610202135517199
     },
-    "regression_resid_z": 1.1785587105886661,
-    "regression_pred": 0.6213490268356189,
+    "regression_resid_z": 1.1785587105886512,
+    "regression_pred": 0.6213490268356208,
     "null_tol0.02": {
      "n_eligible_starts": 3248,
      "n_nonoverlapping": 11,

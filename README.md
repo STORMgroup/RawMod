@@ -118,7 +118,7 @@ The shell launchers need Linux with bash 4 or later. macOS ships bash 3.2: insta
 versions.
 
 `pip install -e ".[paper]"` adds the packages that some paper scripts need: UMAP
-for Figure S2, and a ranged POD5 reader for the COLO829 walkthrough.
+for Supplementary Figure S5, and a ranged POD5 reader for the COLO829 walkthrough.
 
 # Usage
 
@@ -363,12 +363,14 @@ a modified and an unmodified sample at the same positions.
 All models share one architecture (230,697 trainable parameters) and one training
 recipe (see [Training](#training)). They differ only in what was held out of
 training. [`checkpoints/README.md`](checkpoints/README.md) describes every file.
+The same checkpoints are published on Hugging Face at
+https://huggingface.co/STORMResearch/RawMod.
 
 | Checkpoint | Trained on | Use |
 |---|---|---|
 | `checkpoints/rawmod.pt` | All data | **Scoring new data.** The default of every workflow. |
-| `checkpoints/region_holdout/mixed.pt` | All data except one contiguous ~15% region of every genome, and every read that overlaps it | Accuracy numbers of the paper (Tables 1 and 2), measured inside the withheld regions |
-| `checkpoints/region_holdout/loco_<mod>.pt` | As `mixed.pt`, and without every organism that carries `<mod>` | Detection of a modification type never seen in training (Table 2) |
+| `checkpoints/region_holdout/mixed.pt` | All data except one contiguous ~15% region of every genome, and every read that overlaps it | Accuracy numbers of the paper (Table 1 and Supplementary Table S1), measured inside the withheld regions |
+| `checkpoints/region_holdout/loco_<mod>.pt` | As `mixed.pt`, and without every organism that carries `<mod>` | Detection of a modification type never seen in training (Supplementary Table S1) |
 | `checkpoints/leaveout/<name>.pt` | As `mixed.pt`, and without every sample of one organism or library | Supplementary leave-out table of the benchmark (`test/`) |
 
 Accuracy of the region-holdout models inside the withheld regions
@@ -440,7 +442,7 @@ ground-truth BED files by strand.
 | Every other table and figure: generalization, few-shot, ablations, embeddings, the dinoflagellate map, read-origin typing | [`paper/`](paper/README.md): one directory per result, with the scripts that produced it and the inputs they need |
 
 The numbers behind every figure and table are in `paper/data/`. The figure and
-table scripts therefore run on a fresh clone. For example, Table 2:
+table scripts therefore run on a fresh clone. For example, Supplementary Table S1:
 
 ```bash
 python paper/table2_fig4_generalization/make_region_figures.py table

@@ -44,6 +44,7 @@ from . import common as C
 from . import score as Sc
 from .paper_table import GROUPS, TOOLS, COMPARATIVE, claims, families, row_marks, is_cpg
 from . import paper_table as _PT
+from . import upright
 
 # bp kept from known motif sites (10 = half of RawMod's 21-base window, so no known modified base is inside any
 # image) / from designed oligo sites (dense; 10 would leave none in the held-out oligos); positions per row at most
@@ -335,6 +336,7 @@ def within_latex(D):
           r'Rows & ' + ' & '.join(str(dev.size()[t]) for t in tools) + r' \\', r'\bottomrule', r'\end{tabular}']
     out = OUT / 'supp_bench_within.tex'
     out.write_text('\n'.join(A) + '\n')
+    upright.fit(out)
     print(f'-> {out}')
 
 
@@ -389,6 +391,7 @@ def latex(D, onelib):
           r'\bottomrule', r'\end{tabular}']
     out = OUT / 'supp_bench_libcontrol.tex'
     out.write_text('\n'.join(A) + '\n')
+    upright.fit(out)
     print(f'-> {out}')
     return summ
 
