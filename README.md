@@ -11,13 +11,10 @@
 # RawMod Overview
 
 RawMod detects modified DNA bases directly from raw nanopore signals. It is
-**modification-agnostic**: one model detects 5-methylcytosine (5mC),
-5-hydroxymethylcytosine (5hmC), N6-methyladenine (6mA), N4-methylcytosine (4mC)
-and 5-hydroxymethyluracil (5hmU). It is **control-free**: it needs no unmodified
-copy of the DNA.
-
-RawMod answers one question per genomic position: *is this base modified?* It
-gives each position a score between 0 and 1. It does not name the modification.
+**modification-agnostic**, and aims to detect any DNA modification that can 
+be identified from the raw signal. It is **control-free**: it needs no unmodified
+copy of the DNA. Rather than identifying the modification type, RawMod identifies
+the presence of a modification at a single position.
 
 Visit our [project page](https://bds062.github.io/projects/rawmod/) for more
 information.
