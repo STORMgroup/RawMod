@@ -142,7 +142,7 @@ bash download_d5_osativa.sh  # O. sativa + EM-seq
 bash download_d6_mouse_brain.sh  # mouse brain + EM-seq
 bash download_d7_human_hg002.sh  # HG002 + bisulfite
 bash download_d8_ont_oligos.sh  # ONT all-5-mer oligonucleotides (5mC, 5hmC, 6mA, control; two replicates)
-bash download_d9_spo1.sh  # SPO1 reference (the SPO1 reads are deposited under BioProject PRJNA1549981)
+bash download_d9_spo1.sh  # SPO1 reference (the SPO1 reads are deposited under BioProject PRJNA1549975)
 bash download_d10_hpylori_j99.sh  # H. pylori J99 (additional rows; WITH_PACBIO=1 also fetches the PacBio reads)
 bash download_d11_tdenticola.sh  # T. denticola (additional rows; WITH_PACBIO=1 also fetches the PacBio reads)
 cd ../..
@@ -186,7 +186,7 @@ bash test/evaluation/3_leaveout.sh
 # 4. the two UniMeth-Agn variants (context tokens against one [MOD] token) next to RawMod (supplementary S9.4)
 #    cd test/benchmark && BENCH_HOLDOUT=region python -m bench.agn_variants
 
-# 5. Table 1 with confidence intervals (Supplementary Table S27) and the paired RawMod against UniMeth-Agn bootstrap
+# 5. Table 1 with confidence intervals (Supplementary Table S25) and the paired RawMod against UniMeth-Agn bootstrap
 #    cd test/benchmark && BENCH_HOLDOUT=region python -m bench.ci && BENCH_HOLDOUT=region python -m bench.ci_table
 #    cd test/benchmark && BENCH_HOLDOUT=region python -m bench.paired_diff
 ```
@@ -213,14 +213,15 @@ Each holds:
 
 | File | In the paper |
 |---|---|
-| `tables/benchmark_models.tex` | Table 1: every model on every row |
-| `fig_benchmark_main.pdf` | Figure 3: (a) pooled ROC curves under one threshold across all rows, each modification type weighted equally, (b) parameters against mean AUROC over the five types, (c) library invariance |
+| `tables/benchmark_models_all.tex` | Table 1: every model except MethyNano on every row, at the page width (`bench/paper_table_all.py`) |
+| `tables/benchmark_models.tex` | the same in the one-column layout, with fewer columns |
+| `fig_benchmark_main.pdf` | Figure 3 (the paper's version leaves out MethyNano: set `BENCH_FIG3_DROP=methynano`): (a) pooled ROC curves under one threshold across all rows, each modification type weighted equally, (b) parameters against mean AUROC over the five types, (c) library invariance |
 | `tables/benchmark_agnostic.tex` | Supplementary table: modification-agnostic AUROC and pooled AUROC |
 | `tables/benchmark.tex` | Supplementary table: matched evaluation (each tool with the models it ships for the row's modification) |
 | `tables/benchmark_models_full_a.tex`, `_b.tex` | Supplementary table: every model of every tool, in two panels |
 | `fig_benchmark_roc_all.pdf` | Supplementary figure: ROC curves of every row |
 | `tables/benchmark_leaveout.tex`, `leaveout.tsv` | Supplementary table: RawMod in distribution vs. leave-out (written by `3_leaveout.sh`) |
-| `tables/supp_bench_ci_a.tex`, `_b.tex`, `ci_rows.tsv` | Supplementary Table S27: Table 1 with 95% confidence intervals, in two panels (written by `bench.ci` and `bench.ci_table`; the rows behind the paper's table are also shipped in `paper/data/work/benchmark_ci/`) |
+| `tables/supp_bench_ci_a.tex`, `_b.tex`, `ci_rows.tsv` | Supplementary Table S25: Table 1 with 95% confidence intervals, in two panels (written by `bench.ci` and `bench.ci_table`; the rows behind the paper's table are also shipped in `paper/data/work/benchmark_ci/`) |
 | `paper_models.tsv`, `paper_tables.tsv` | every number of the tables |
 | `summary.md` | the main tables in plain text |
 

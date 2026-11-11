@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Summarize memory_scaling.sh: per number of processes, wall time and peak memory of the fused featurization +
-scoring of both strands (Supplementary Section S2.2), next to Dorado's basecalling pass.
+scoring of both strands (Supplementary Section S10.4), next to Dorado's basecalling pass.
 
   python make_memory_table.py [TIMING_TSV]    (default: the shipped paper/data/work/cost/memory_scaling.tsv)
 """

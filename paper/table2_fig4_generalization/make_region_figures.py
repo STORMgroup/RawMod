@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Table 2 and Figure 4a (zero-shot detection of withheld modifications) and Figure 5 (few-shot curves) from the metrics of the region-holdout runs. Usage: make_region_figures.py table|generalization|fewshot."""
+"""Supplementary Table S1 (zero-shot detection of withheld modifications), the generalization figure and the few-shot curves (Supplementary Figure S1) from the metrics of the region-holdout runs; make_fig4_combined.py draws Figure 4 from the same metrics. Usage: make_region_figures.py table|generalization|fewshot."""
 import os as _os
 from pathlib import Path as _Path
 REPO = str(_Path(__file__).resolve().parents[2])

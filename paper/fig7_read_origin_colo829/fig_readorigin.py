@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figure 7: the two read-origin figures combined (panels a-d from fig_tumor_normal_joint.py, e-h from fig_method_comparison.py)."""
+"""Figure 5: the two read-origin figures combined (panels a-d from fig_tumor_normal_joint.py, e-h from fig_method_comparison.py)."""
 import os as _os
 from pathlib import Path as _Path
 REPO = str(_Path(__file__).resolve().parents[2])

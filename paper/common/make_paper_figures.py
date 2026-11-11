@@ -175,7 +175,7 @@ def fig_overview():
 
 
 
-# ============================================================== Fig. 4 dinoflagellate
+# ============================================================== Supplementary Fig. S5 dinoflagellate
 def fig_dino():
     c = np.load(DINODATA / 'dino_cache.npz'); rc = np.load(DINODATA / 'dino_repeat_cache.npz')
     st = json.load(open(DINODATA / 'dino_stats.json')); rs = json.load(open(DINODATA / 'dino_repeat_stats.json'))

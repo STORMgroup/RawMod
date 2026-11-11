@@ -435,6 +435,9 @@ def main():
     # upright layout for the supplement: abbreviated headers; the full model table in two panels
     for name in ('benchmark', 'benchmark_agnostic', 'benchmark_models_full'):
         upright.fit(out / 'tables' / f'{name}.tex')
+    # Table 1 of the preprint: every model except MethyNano on all 15 rows, at the page width
+    from . import paper_table_all
+    paper_table_all.main(str(out / 'tables' / 'benchmark_models_full.tex'), str(out / 'tables' / 'benchmark_models_all.tex'))
     mdf.to_csv(out / 'paper_models.tsv', sep='\t', index=False, float_format='%.4f')
     df.drop(columns=['_pool'], errors='ignore').to_csv(out / 'paper_tables.tsv', sep='\t', index=False, float_format='%.4f')
     for name, cells in summ:

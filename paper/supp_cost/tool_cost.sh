@@ -1,5 +1,5 @@
 #!/bin/bash
-# Cost of every benchmarked caller on the same reads (Supplementary Table S2): Dorado's basecall with move tables
+# Cost of every benchmarked caller on the same reads (Supplementary Table S27): Dorado's basecall with move tables
 # (shared by every tool), Dorado's four modification models (one pass each, and the fewest passes: 6mA + 4mC_5mC
 # share one), DeepMod2, Rockfish, the released UniMeth 5mC and 6mA models (sharing one signal index), and RawMod
 # (refinement in 8 read shards, then featurization fused with scoring in 8 genome chunks per strand, scoring on the

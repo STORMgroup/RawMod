@@ -24,6 +24,7 @@ library_control's library_control.tsv; no rescoring.
 
   python -m bench.paper_fig3 --dir DIR [--name fig_benchmark_main]
 """
+import os
 import argparse
 from pathlib import Path
 
@@ -118,7 +119,8 @@ def main():
     t1 = pd.read_csv(d / 'paper_tables.tsv', sep='\t')
     t1['auroc'] = pd.to_numeric(t1['agnostic'], errors='coerce')  # the tool as a whole, as in benchmark_agnostic.tex
     acc = t1.assign(mark=t1['row'].map(mark_of)).groupby(['tool', 'mark'])['auroc'].mean().groupby('tool').mean()
-    tools = [f for f, _ in TOOLS if f in acc.index and f not in COMPARATIVE]
+    tools = [f for f, _ in TOOLS if f in acc.index and f not in COMPARATIVE
+             and f not in os.environ.get('BENCH_FIG3_DROP', '').split(',')]  # the preprint uses BENCH_FIG3_DROP=methynano
     size = {f: sum(nparam(t) for t in fam[f][:ONE_MODEL.get(f, len(fam[f]))]) for f in tools}
     for f in tools:  # a RawMod column scored outside config/rawmod_models.tsv has no family entry: it is the one model
         if f.startswith('rawmod') and not size[f]:

@@ -1,6 +1,6 @@
 # Label-free read-origin typing on COLO829
 
-This directory reproduces the COLO829 part of Figure 4 and Supplementary Table S9: RawMod's
+This directory reproduces the COLO829 part of Figure 5 and Table 2: RawMod's
 per-read embeddings separate melanoma reads (COLO829) from the matched
 lymphoblastoid reads (COLO829BL) in 10 kb windows of chr20, without labels and
 without methylation calls, and the separation grows with the number of
@@ -84,7 +84,7 @@ of each remote POD5 file.
 
 5. **Figures:** `fig_tumor_normal_joint.py` (panels a–d) and
    `fig_method_comparison.py` (panels e–h) read the discovery tables;
-   `fig_readorigin.py` combines them into Figure 4. The Dorado, MethylBERT
+   `fig_readorigin.py` combines them into Figure 5. The Dorado, MethylBERT
    and ROCIT arms of panels e–h need those tools' outputs on the same reads.
 
    Steps 1–4 are not needed to redraw the figure: the discovery tables, the

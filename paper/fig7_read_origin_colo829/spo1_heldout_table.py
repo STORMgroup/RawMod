@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Supplementary Table S14: SPO1 native-against-PCR typing by models that did not train on these reads, against Dorado.
+"""Supplementary Table S10: SPO1 native-against-PCR typing by models that did not train on these reads, against Dorado.
 
   python spo1_heldout_table.py collect RUN_DIR   per-window AUROC of every model from spo1_heldout_models.sh
                                                  -> paper/data/work/read_origin/spo1_heldout.tsv

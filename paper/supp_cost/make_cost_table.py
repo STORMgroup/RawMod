@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Supplementary Table S2: the cost of every caller after the shared basecall, from one tool_cost.sh run.
+"""Supplementary Table S27: the cost of every caller after the shared basecall, from one tool_cost.sh run.
 
   python make_cost_table.py [TIMING_TSV] [OUT.tex]   (defaults: the shipped paper/data/work/cost/tool_cost.tsv,
                                                       paper/tables/supp_cost.tex)

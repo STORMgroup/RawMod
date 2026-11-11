@@ -1,6 +1,6 @@
 #!/bin/bash
 # Host and GPU memory of RawMod's fused featurization + scoring against the number of parallel processes
-# (Supplementary Section S2.2). The reads are basecalled once with Dorado (--emit-moves), refined with the bundled
+# (Supplementary Section S10.4). The reads are basecalled once with Dorado (--emit-moves), refined with the bundled
 # Remora refiner, split into N chunks of equal read coverage and scored on both strands with N processes sharing one GPU.
 # Measurements as in tool_cost.sh (timing_lib.sh).
 #

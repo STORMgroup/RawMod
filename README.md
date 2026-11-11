@@ -3,6 +3,7 @@
 </p>
 
 <p align="center">
+  <a href="https://bds062.github.io/projects/rawmod/"><img src="https://img.shields.io/badge/Project%20page-RawMod-0071e3" alt="RawMod project page"></a>
   <a href="https://huggingface.co/STORMResearch/RawMod"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-yellow" alt="Pretrained models on Hugging Face"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
 </p>
@@ -17,6 +18,9 @@ copy of the DNA.
 
 RawMod answers one question per genomic position: *is this base modified?* It
 gives each position a score between 0 and 1. It does not name the modification.
+
+Visit our [project page](https://bds062.github.io/projects/rawmod/) for more
+information.
 
 The figure above shows how RawMod works.
 
@@ -123,7 +127,7 @@ The shell launchers need Linux with bash 4 or later. macOS ships bash 3.2: insta
 versions.
 
 `pip install -e ".[paper]"` adds the packages that some paper scripts need: UMAP
-for Supplementary Figure S5, and a ranged POD5 reader for the COLO829 walkthrough.
+for Supplementary Figure S2, and a ranged POD5 reader for the COLO829 walkthrough.
 
 # Usage
 

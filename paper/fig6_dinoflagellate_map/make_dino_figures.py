@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figure 6 and the supplementary dinoflagellate figure from the outputs of the analysis scripts."""
+"""Supplementary Figures S5 and S6 (the dinoflagellate map) from the outputs of the analysis scripts."""
 import os as _os
 from pathlib import Path as _Path
 REPO = str(_Path(__file__).resolve().parents[2])
@@ -14,7 +14,7 @@ YLIM = {'fig_dino.pdf': {0: (0.34, 1.00), 4: (0.5, 0.92), 5: (0.35, 1.0), 6: (0,
 def panel_b_observed_only(ax):
     """Redraw panel b without the context-adjusted bars: under a base-masked model the
     adjustment leaves IG/CDS at 1.10-1.14x (observed 1.11x), so the second bar only
-    repeats the first. The control stays in the text and Supplementary Table S6."""
+    repeats the first. The control stays in the text and Supplementary Table S7."""
     import json
     st = json.load(open(P.DINODATA / 'dino_stats.json'))
     cats = ['intergenic', 'intron', 'UTR', 'CDS']

@@ -1,5 +1,5 @@
 #!/bin/bash
-# SPO1 native-against-PCR typing with models that did not train on these reads (Supplementary Table S14).
+# SPO1 native-against-PCR typing with models that did not train on these reads (Supplementary Table S10).
 # Same arm as the paper's SPO1 panel: per window, 200 random forward-strand T sites, the pc1 split + consensus of
 # discover.py, coverage-matched scoring (coverage_matched.py, since the native and PCR reads differ in length).
 #   released  checkpoints/rawmod.pt                    (all data; saw these reads)

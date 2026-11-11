@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figure 7e-h: per-window oriented AUROC of every method on each dataset, with the batch control."""
+"""Figure 5e-h: per-window oriented AUROC of every method on each dataset, with the batch control."""
 
 from __future__ import annotations
 import os as _os

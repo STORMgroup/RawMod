@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Supplementary figure: modifications that only RawMod can call.
 
-Row 1 (benchmark sites, ground truth): the UMAP of Fig. S5 (region-holdout mixed model). One panel per released
+Row 1 (benchmark sites, ground truth): the UMAP of Fig. S2 (region-holdout mixed model). One panel per released
 single-sample caller; a modified site is coloured by its modification where the tool has a released model for the
 row's modification and context (the N/A pattern of tab:supp-bench-matched), and drawn black where the tool has none.
 Row 2 (A. carterae contig_3762, no ground truth): UMAP of the released all-data model's embeddings of + strand sites,

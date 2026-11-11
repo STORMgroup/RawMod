@@ -29,12 +29,12 @@ bash download_d11_tdenticola.sh  # WITH_PACBIO=1 also downloads the PacBio reads
 | D6 Mouse brain | `mouse` | `mouse_cpg` | 938 GB | [1] |
 | D7 Human HG002 | `hg002` | `hg002_cpg` | 286 GB | [2], [3] |
 | D8 ONT all-5-mer oligonucleotides | `syn_{5mC,5hmC,6mA,control}`, `..._rep2` | `syn_5mC`, `syn_5hmC`, `syn_6mA`; `syn_*_rep2` | 3 GB | [4] |
-| D9 Bacillus phage SPO1 | `spo1_bc07` (native), `spo1_bc01` (PCR) | `spo1_5hmU` | reference only | this study (BioProject [PRJNA1549981](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1549981)) |
+| D9 Bacillus phage SPO1 | `spo1_bc07` (native), `spo1_bc01` (PCR) | `spo1_5hmU` | reference only | this study (BioProject [PRJNA1549975](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA1549975)) |
 | D10 *H. pylori* J99 | `hpj99` | `hpj99_4mC_pb`, `hpj99_6mA_pb` | 2.1 GB (+0.7 GB PacBio) | [1], [5] |
 | D11 *T. denticola* ATCC 35405 | `tdenticola` | `tden_4mC_pb`, `tden_6mA_pb` | 3.5 GB (+1.8 GB PacBio) | [1], [5] |
 
 All nanopore data are R10.4.1. The 15 rows of D1-D9 form the paper's benchmark; the replicate-2 rows of D8 and the rows
-of D10 and D11 are additional rows. The SPO1 nanopore libraries are deposited under BioProject PRJNA1549981 and are not downloaded by the script; place their pod5 files
+of D10 and D11 are additional rows. The SPO1 nanopore libraries are deposited under BioProject PRJNA1549975 and are not downloaded by the script; place their pod5 files
 in `d9_spo1/pod5_files/` to score the `spo1_5hmU` row. The mouse-brain benchmark reads are spread over all 452 files of
 the two runs, so the whole dataset is needed although only 39,622 reads are used.
 

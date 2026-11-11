@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figure 7a-d: example windows in embedding PC space and the agreement of the label-free partition with read origin against the number of differential CpGs."""
+"""Figure 5a-d: example windows in embedding PC space and the agreement of the label-free partition with read origin against the number of differential CpGs."""
 
 from __future__ import annotations
 import os as _os

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Library invariance with and without the curriculum (Supplementary Section S3).
+"""Library invariance with and without the curriculum (Supplementary Section S4).
 
 For every two-library benchmark row, the library fingerprint is the AUROC of native-library background positions
 against the same positions in the unmodified control (positions with no known modification); invariance is
