@@ -3,6 +3,7 @@
 </p>
 
 <p align="center">
+  <a href="https://www.biorxiv.org/content/10.64898/2026.11.10.765445v1"><img src="https://img.shields.io/badge/bioRxiv-10.64898%2F2026.11.10.765445-b31b1b" alt="RawMod preprint on bioRxiv"></a>
   <a href="https://bds062.github.io/projects/rawmod/"><img src="https://img.shields.io/badge/Project%20page-RawMod-0071e3" alt="RawMod project page"></a>
   <a href="https://huggingface.co/STORMResearch/RawMod"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-yellow" alt="Pretrained models on Hugging Face"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a>
@@ -479,9 +480,24 @@ variable. Only the variables of the workflow you run need to be set.
 
 # Citing RawMod
 
-The RawMod paper is under review. We will add its citation here once it is
-published. Until then, please cite this repository:
-https://github.com/STORMgroup/RawMod.
+If you use RawMod, please cite our [preprint](https://www.biorxiv.org/content/10.64898/2026.11.10.765445v1):
+
+> Bhargav Srinivasan, Sabeena Nazar, Vir Gandhi, Ernest Zhang, Tsvetan Bachvaroff,
+> Mikhail Kolmogorov, Allen Place, and Can Firtina.
+> "RawMod: Modification-Agnostic Detection of DNA Base Modifications from Nanopore
+> Signal Pileups." *bioRxiv* (2026).
+> [doi:10.64898/2026.11.10.765445](https://doi.org/10.64898/2026.11.10.765445)
+
+```bibtex
+@article{srinivasan2026rawmod,
+  title = {RawMod: Modification-Agnostic Detection of DNA Base Modifications from Nanopore Signal Pileups},
+  author = {Srinivasan, Bhargav and Nazar, Sabeena and Gandhi, Vir and Zhang, Ernest and Bachvaroff, Tsvetan and Kolmogorov, Mikhail and Place, Allen and Firtina, Can},
+  journal = {bioRxiv},
+  year = {2026},
+  doi = {10.64898/2026.11.10.765445},
+  url = {https://www.biorxiv.org/content/10.64898/2026.11.10.765445v1}
+}
+```
 
 # License
 
